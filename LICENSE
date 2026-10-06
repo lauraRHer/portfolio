@@ -1,0 +1,18 @@
+Copyright (c) 2026 Laura Rodrigo Hernando. All rights reserved.
+
+This repository is published so that its source can be read as part of my
+portfolio. No licence is granted: you may not copy, modify, distribute,
+sublicense or use this code, its texts, CV, images, 3D models or any other
+content, in whole or in part, without my prior written permission.
+
+Viewing the repository and forking it on GitHub are allowed only to the extent
+required by the GitHub Terms of Service.
+
+Third-party dependencies and assets keep their own licences. In particular,
+the 3D mascot model (front/assets/mascot/meshy_mascot.glb and its rigged
+version front/public/models/mascot.glb) was generated with Meshy
+(https://www.meshy.ai) and is licensed under CC BY 4.0
+(https://creativecommons.org/licenses/by/4.0/); the all-rights-reserved
+notice above does not apply to it.
+
+Contact: laurarodrigohernando@gmail.com

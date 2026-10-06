@@ -1,0 +1,35 @@
+# Full stack locally:   docker compose up --build
+# Ollama runs on the host (it needs your GPU/CPU and models); the API reaches it
+# through host.docker.internal. To use a hosted model instead, set LLM_PROVIDER etc.
+# in back/.env (see back/.env.example).
+services:
+  api:
+    build: ./back
+    env_file:
+      - path: ./back/.env
+        required: false
+    environment:
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      CORS_ORIGINS: '["http://localhost:3000"]'
+      # local stack: keep /docs and dev defaults (the image defaults to production)
+      ENVIRONMENT: ${ENVIRONMENT:-development}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - chroma-data:/app/data
+    ports:
+      - "8000:8000"
+
+  web:
+    build:
+      context: ./front
+      args:
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+
+volumes:
+  chroma-data:

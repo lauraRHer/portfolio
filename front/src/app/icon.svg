@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- "LRH" monogram, same as the chat header badge: nebula gradient + Space Grotesk Bold (as paths) -->
+  <defs>
+    <linearGradient id="nebula" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset=".5" stop-color="#e040fb"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="32" fill="url(#nebula)"/>
+  <path fill="#f2f2f7" transform="matrix(0.02275 0 0 -0.02275 10.498 39.964)" d="M66 0V700H198V120H518V0ZM638 0V700H942Q1008 700 1057.0 677.0Q1106 654 1133.0 612.0Q1160 570 1160 513V501Q1160 438 1130.0 399.0Q1100 360 1056 342V324Q1096 322 1118.0 296.5Q1140 271 1140 229V0H1008V210Q1008 234 995.5 249.0Q983 264 954 264H770V0ZM770 384H928Q975 384 1001.5 409.5Q1028 435 1028 477V487Q1028 529 1002.0 554.5Q976 580 928 580H770ZM1300 0V700H1432V411H1692V700H1824V0H1692V291H1432V0Z"/>
+</svg>

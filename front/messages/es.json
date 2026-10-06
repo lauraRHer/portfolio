@@ -1,0 +1,260 @@
+{
+  "meta": {
+    "title": "Laura Rodrigo Hernando — Desarrolladora Full-Stack · Angular · FastAPI · IA aplicada",
+    "description": "Laura Rodrigo Hernando, desarrolladora full-stack (Angular, Python/FastAPI, PostgreSQL/PostGIS) especializada en aplicaciones de visualización de datos y en IA aplicada: RAG y modelos locales. Disponible en remoto.",
+    "ogTitle": "Laura Rodrigo · Explora un nuevo universo"
+  },
+  "nav": {
+    "core": "Sobre mí",
+    "services": "Servicios",
+    "stack": "Stack",
+    "experience": "Experiencia",
+    "caseStudy": "Caso de estudio",
+    "projects": "Proyectos",
+    "learning": "Formación",
+    "contact": "Contacto",
+    "cv": "CV",
+    "skipIntro": "Saltar intro",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú",
+    "language": "Idioma",
+    "home": "Volver al inicio",
+    "progress": "Progreso de la página"
+  },
+  "hero": {
+    "eyebrow": "Laura Rodrigo Hernando · Full-Stack → AI Engineer",
+    "title": "Explora un nuevo universo",
+    "subtitle": "Arrastra para girar la galaxia. Haz scroll para entrar en la estrella.",
+    "scroll": "Scroll",
+    "enter": "Entrar",
+    "canvasLabel": "Galaxia interactiva en 3D"
+  },
+  "core": {
+    "orbit": "Órbita 01 · Núcleo",
+    "microline": "> Has llegado. Bienvenida/o al núcleo.",
+    "title": "Hola, soy Laura.",
+    "role": "Desarrolladora full-stack: datos, mapas y, cada vez más, IA.",
+    "flipPrefix": "Hoy construyo con",
+    "flipWords": [
+      "Angular",
+      "FastAPI",
+      "PostgreSQL",
+      "LlamaIndex"
+    ],
+    "paragraph": "Llevo más de 3 años en CARTIF convirtiendo datos y modelos de predicción en aplicaciones web fáciles de usar: mapas interactivos, gráficas y APIs con Angular, FastAPI y PostgreSQL/PostGIS. Me gusta cuidar tanto la interfaz como lo que hay detrás, y ahora sumo la IA a la ecuación con modelos de visión locales, sistemas RAG y agentes de codificación en mi día a día.",
+    "ctaCv": "Descargar CV",
+    "ctaTalk": "Hablemos",
+    "facts": {
+      "experienceLabel": "Experiencia",
+      "experience": "+3 años",
+      "baseLabel": "Base",
+      "base": "Valladolid, España",
+      "focusLabel": "Foco",
+      "focus": "Full-stack → IA aplicada",
+      "stackLabel": "Stack",
+      "stack": "Angular · FastAPI · PostgreSQL · IA"
+    },
+    "availability": "Disponible para trabajo en remoto y proyectos freelance"
+  },
+  "services": {
+    "orbit": "Órbita 02 · Misiones",
+    "title": "Qué hago",
+    "intro": "De la base de datos al último píxel: puedo encargarme de una aplicación de principio a fin o reforzar un equipo donde más lo necesite."
+  },
+  "stack": {
+    "orbit": "Órbita 03 · Constelación",
+    "title": "Stack y habilidades",
+    "intro": "Mi caja de herramientas: lo que uso a diario en producción y lo que estoy incorporando para trabajar con IA.",
+    "foundations": "Fundamentos"
+  },
+  "experience": {
+    "orbit": "Órbita 04 · Trayectoria",
+    "title": "Experiencia",
+    "intro": "Más de 3 años en CARTIF: de la intranet de la empresa a más de 8 aplicaciones de datos y mapas.",
+    "present": "Actualidad",
+    "caseLink": "Ver proyectos",
+    "education": "Formación"
+  },
+  "caseStudy": {
+    "orbit": "Órbita 05 · Supernova",
+    "title": "Caso de estudio: tickets y facturas leídos por una IA local",
+    "lede": "Le das la foto de un documento y te devuelve sus datos listos para usar, con un modelo de visión que se ejecuta en local.",
+    "badges": [
+      "Caso real",
+      "CARTIF",
+      "Interno"
+    ],
+    "meta": {
+      "roleLabel": "Rol",
+      "role": "Backend e IA",
+      "teamLabel": "Equipo",
+      "team": "2 personas",
+      "stackLabel": "Stack",
+      "stack": "Python, FastAPI, uv, Ollama",
+      "modelLabel": "Modelo",
+      "model": "Visión, en local (Ollama)"
+    },
+    "blocks": [
+      {
+        "title": "Qué hace",
+        "body": "Recibe la foto de un documento, decide si es un ticket, una factura o ninguno de los dos y extrae la categoría, el importe, la moneda y otros campos clave. Si la imagen no es válida o no se puede leer, responde con un error claro."
+      },
+      {
+        "title": "Cómo funciona",
+        "body": "Una API en FastAPI envía la imagen a un modelo de visión que corre en local con Ollama y transforma su respuesta en un JSON estructurado, listo para integrarse en cualquier sistema."
+      },
+      {
+        "title": "Por qué en local",
+        "body": "Privacidad por diseño: el modelo se ejecuta en la propia infraestructura y ningún documento sale a servicios externos."
+      },
+      {
+        "title": "Mi papel",
+        "body": "Lo desarrollé junto a un compañero: de la API a la integración con el modelo y el formato de la respuesta."
+      }
+    ],
+    "pipelineTitle": "Cómo funciona",
+    "runtime": "FastAPI · uv · Ollama (modelo de visión) — 100% local",
+    "nodes": [
+      {
+        "title": "Foto",
+        "detail": "Imagen del documento"
+      },
+      {
+        "title": "Modelo de visión",
+        "detail": "Local, con Ollama"
+      },
+      {
+        "title": "Clasificación",
+        "detail": "Ticket, factura o ninguno"
+      },
+      {
+        "title": "Extracción",
+        "detail": "Categoría, importe, moneda…"
+      },
+      {
+        "title": "Respuesta",
+        "detail": "Objeto estructurado o error"
+      }
+    ],
+    "note": "Proyecto interno: no se muestra código ni datos confidenciales."
+  },
+  "projects": {
+    "orbit": "Órbita 06 · Sistemas",
+    "title": "Proyectos",
+    "intro": "Una selección de lo que he construido. En los proyectos de CARTIF indico qué parte desarrollé yo; los personales son mi laboratorio, sobre todo para la IA.",
+    "filters": {
+      "all": "Todos",
+      "ai": "IA",
+      "web": "Web",
+      "backend": "Backend",
+      "testing": "Testing"
+    },
+    "filterLabel": "Filtrar proyectos",
+    "exampleBadge": "Ejemplo",
+    "exampleNote": "Proyecto de ejemplo — en desarrollo",
+    "featured": "Destacado",
+    "links": {
+      "demo": "Demo",
+      "repo": "Código",
+      "caseStudy": "Ver caso"
+    },
+    "nextSystem": "Próximo sistema en construcción…",
+    "empty": "No hay proyectos en esta categoría todavía.",
+    "inProgressBadge": "En desarrollo",
+    "personalBadge": "Personal"
+  },
+  "horizon": {
+    "orbit": "Órbita 07 · Horizonte",
+    "title": "Formación y rumbo a la IA",
+    "intro": "Empecé por los fundamentos —cómo funcionan por dentro las redes neuronales, los transformers y los embeddings— y ahora llevo la IA a proyectos reales, en el trabajo y en casa.",
+    "educationTitle": "Formación y certificaciones",
+    "roadTitle": "En qué estoy ahora",
+    "now": "Ahora",
+    "next": "Siguiente",
+    "road": [
+      {
+        "tag": "now",
+        "text": "Construyendo un chatbot educativo con un RAG propio en LlamaIndex."
+      },
+      {
+        "tag": "now",
+        "text": "Trabajando con IA en local (Ollama) y con agentes de codificación como Claude Code y Codex."
+      },
+      {
+        "tag": "next",
+        "text": "Llevar asistentes RAG y aplicaciones con IA a producción para clientes y equipos."
+      }
+    ],
+    "closing": "Mi punto fuerte: sé construir todo lo que rodea al modelo — la interfaz, la API, los datos y el despliegue.",
+    "viewCredential": "Ver credencial"
+  },
+  "contact": {
+    "orbit": "Órbita 08 · Transmisión",
+    "title": "Hablemos.",
+    "sub": "¿Buscas a alguien para tu equipo o tienes un proyecto en mente? Trabajo en remoto y estaré encantada de escucharte. Envíame una señal.",
+    "labels": {
+      "email": "Email",
+      "linkedin": "LinkedIn",
+      "github": "GitHub",
+      "cv": "Currículum"
+    },
+    "copyEmail": "Copiar email",
+    "openMail": "Abrir correo",
+    "viewProfile": "Ver perfil",
+    "downloadCv": "Descargar CV (PDF)",
+    "copied": "Email copiado ✓",
+    "mailSubject": "Contacto desde tu portfolio",
+    "location": "Valladolid, España"
+  },
+  "footer": {
+    "madeWith": "Diseñado y construido con Next.js, React Three Fiber y un poco de polvo de estrellas.",
+    "mascotCredit": "Mascota 3D generada con <meshy>Meshy</meshy> y adaptada (esqueleto y animación) · <license>CC BY 4.0</license>",
+    "reduceMotion": "Reducir animaciones",
+    "enableMotion": "Activar animaciones",
+    "backToTop": "Volver al inicio ↑",
+    "seeGalaxy": "Ver la galaxia"
+  },
+  "chat": {
+    "open": "Abrir asistente",
+    "title": "Asistente de Laura",
+    "subtitle": "RAG · solo sobre mi perfil",
+    "reset": "Nueva conversación",
+    "close": "Cerrar asistente",
+    "greetingTitle": "¡Hola! Soy el asistente de Laura.",
+    "greetingBody": "Puedo contarte sobre su experiencia, sus proyectos, su stack o cómo contactarla.",
+    "suggestions": [
+      "¿Qué experiencia tiene Laura?",
+      "¿En qué proyectos ha trabajado en CARTIF?",
+      "¿Qué ha hecho con IA?",
+      "¿Está disponible para proyectos freelance?",
+      "¿Cómo puedo contactarla?"
+    ],
+    "placeholders": [
+      "¿Ha trabajado con mapas?",
+      "¿Dónde se formó?",
+      "¿Qué stack usa?"
+    ],
+    "inputLabel": "Escribe tu pregunta",
+    "send": "Enviar",
+    "stop": "Detener",
+    "disclaimer": "Respuestas generadas por IA a partir de mi CV y este sitio. Puede equivocarse.",
+    "error": "Vaya, se ha perdido la señal. Inténtalo de nuevo o escribe a Laura directamente.",
+    "rateLimit": "Demasiadas preguntas seguidas. Espera un momento.",
+    "offline": "El asistente no está disponible ahora mismo. Puedes escribir a Laura directamente.",
+    "retry": "Reintentar",
+    "copyEmail": "Copiar email",
+    "copied": "Copiado ✓",
+    "sources": "Fuentes",
+    "newMessages": "↓ Nuevos mensajes",
+    "you": "Tú",
+    "assistant": "Asistente",
+    "slow": "Sigo pensando… (puede tardar un poco)"
+  },
+  "mascot": {
+    "hello": "¡Hola! ¿Te puedo ayudar?",
+    "here": "Si me necesitas, estoy aquí 💜",
+    "hover": "¿Hablamos? ¡Pulsa y pregúntame!",
+    "phew": "¡Uf!",
+    "label": "Abrir el asistente de Laura"
+  }
+}

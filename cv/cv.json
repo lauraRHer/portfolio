@@ -1,0 +1,355 @@
+{
+  "name": "Laura Rodrigo Hernando",
+  "title": {
+    "es": "Desarrolladora Full-Stack · Angular · Python/FastAPI · IA aplicada",
+    "en": "Full-Stack Developer · Angular · Python/FastAPI · Applied AI"
+  },
+  "contact": {
+    "location": {
+      "es": "Valladolid, España · Disponible en remoto",
+      "en": "Valladolid, Spain · Available remotely"
+    },
+    "email": "laurarodrigohernando@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/laura-rodrigo-hernando-77b736226",
+    "github": "https://github.com/lauraRHer"
+  },
+  "labels": {
+    "profile": {
+      "es": "Perfil",
+      "en": "Profile"
+    },
+    "skills": {
+      "es": "Competencias técnicas",
+      "en": "Technical skills"
+    },
+    "experience": {
+      "es": "Experiencia profesional",
+      "en": "Professional experience"
+    },
+    "highlights": {
+      "es": "Proyectos destacados",
+      "en": "Selected projects"
+    },
+    "personal": {
+      "es": "Proyectos personales",
+      "en": "Personal projects"
+    },
+    "education": {
+      "es": "Formación",
+      "en": "Education & training"
+    },
+    "languages": {
+      "es": "Idiomas",
+      "en": "Languages"
+    },
+    "availability": {
+      "es": "Disponibilidad",
+      "en": "Availability"
+    },
+    "present": {
+      "es": "actualidad",
+      "en": "present"
+    }
+  },
+  "profile": {
+    "es": "Desarrolladora full-stack con más de 3 años de experiencia creando aplicaciones web de visualización de datos con Angular, Python/FastAPI y PostgreSQL/PostGIS: mapas interactivos, gráficas, APIs REST y despliegue con Docker y CI/CD. He trabajado en más de 8 aplicaciones, desde la interfaz hasta la base de datos, y he desarrollado de principio a fin una aplicación interna con autenticación Keycloak. Incorporo la IA generativa a mi trabajo con extracción de datos mediante modelos de visión locales, sistemas RAG y agentes de codificación.",
+    "en": "Full-stack developer with 3+ years of experience building data visualisation web applications with Angular, Python/FastAPI and PostgreSQL/PostGIS: interactive maps, charts, REST APIs and Docker and CI/CD deployments. I have worked on more than 8 applications, from the user interface to the database, and built an internal application end to end with Keycloak authentication. I bring generative AI into my work through data extraction with local vision models, RAG systems and coding agents."
+  },
+  "skills": [
+    {
+      "name": {
+        "es": "Frontend",
+        "en": "Frontend"
+      },
+      "items": "Angular, TypeScript, HTML/CSS, ng-zorro, PrimeNG, Clarity, Leaflet, ECharts, Plotly.js, GSAP, That Open (IFC/BIM), i18n, Figma"
+    },
+    {
+      "name": {
+        "es": "Backend y datos",
+        "en": "Backend & data"
+      },
+      "items": {
+        "es": "Python, FastAPI, .NET, PostgreSQL + PostGIS (GeoJSON), Celery, migraciones de datos (CSV/JSON), DBeaver, uv, Poetry",
+        "en": "Python, FastAPI, .NET, PostgreSQL + PostGIS (GeoJSON), Celery, data migrations (CSV/JSON), DBeaver, uv, Poetry"
+      }
+    },
+    {
+      "name": {
+        "es": "Seguridad",
+        "en": "Security"
+      },
+      "items": {
+        "es": "Keycloak (configuración, administración y doble factor), JWT, roles y permisos entre aplicaciones",
+        "en": "Keycloak (setup, administration and 2FA), JWT, cross-application roles and permissions"
+      }
+    },
+    {
+      "name": {
+        "es": "DevOps y calidad",
+        "en": "DevOps & quality"
+      },
+      "items": {
+        "es": "Git, CI/CD, Docker, entornos de desarrollo y producción, SonarQube, Cypress, pytest, Linux",
+        "en": "Git, CI/CD, Docker, development and production environments, SonarQube, Cypress, pytest, Linux"
+      }
+    },
+    {
+      "name": {
+        "es": "IA aplicada",
+        "en": "Applied AI"
+      },
+      "items": {
+        "es": "LLMs locales (Ollama), modelos de visión, RAG (LlamaIndex, LangGraph), integración de APIs de LLM (OpenAI, Anthropic), agentes de codificación (Claude Code, Codex)",
+        "en": "Local LLMs (Ollama), vision models, RAG (LlamaIndex, LangGraph), LLM API integration (OpenAI, Anthropic), coding agents (Claude Code, Codex)"
+      }
+    },
+    {
+      "name": {
+        "es": "Fundamentos de IA",
+        "en": "AI foundations"
+      },
+      "items": {
+        "es": "Machine learning y deep learning, redes neuronales, transformers y atención, embeddings; PyTorch, pandas, NumPy, Hugging Face, LangChain, Langfuse",
+        "en": "Machine learning and deep learning, neural networks, transformers and attention, embeddings; PyTorch, pandas, NumPy, Hugging Face, LangChain, Langfuse"
+      }
+    },
+    {
+      "name": {
+        "es": "Forma de trabajo",
+        "en": "Ways of working"
+      },
+      "items": {
+        "es": "Scrum, equipos multidisciplinares, mentoría de becarios y juniors",
+        "en": "Scrum, multidisciplinary teams, mentoring interns and juniors"
+      }
+    }
+  ],
+  "experience": [
+    {
+      "role": {
+        "es": "Desarrolladora Full-Stack",
+        "en": "Full-Stack Developer"
+      },
+      "company": "CARTIF",
+      "location": {
+        "es": "Boecillo (Valladolid)",
+        "en": "Boecillo (Valladolid), Spain"
+      },
+      "start": {
+        "es": "jun. 2023",
+        "en": "Jun 2023"
+      },
+      "end": null,
+      "bullets": {
+        "es": [
+          "Desarrollo más de 8 aplicaciones web de visualización y análisis de datos con Angular y Python/FastAPI, desde la interfaz hasta la base de datos.",
+          "Convierto modelos de predicción en herramientas web: configuración de parámetros, ejecución asíncrona (Celery) y resultados en mapas (Leaflet) y gráficas (ECharts, Plotly.js).",
+          "Diseño APIs REST y bases de datos geoespaciales (PostgreSQL/PostGIS) y participo en las decisiones de arquitectura y en los contratos entre frontend y backend.",
+          "Garantizo la calidad y la entrega continua con tests E2E (Cypress) y de backend (pytest), análisis con SonarQube, contenedores Docker y pipelines de CI/CD.",
+          "Trabajo con Scrum en equipos multidisciplinares y formo y superviso a becarios y desarrolladores junior."
+        ],
+        "en": [
+          "Develop 8+ data visualisation and analysis web applications with Angular and Python/FastAPI, from the user interface to the database.",
+          "Turn prediction models into web tools: parameter configuration, asynchronous execution (Celery) and results on maps (Leaflet) and charts (ECharts, Plotly.js).",
+          "Design REST APIs and geospatial databases (PostgreSQL/PostGIS) and contribute to architecture decisions and frontend-backend contracts.",
+          "Ensure quality and continuous delivery with E2E (Cypress) and backend (pytest) tests, SonarQube analysis, Docker containers and CI/CD pipelines.",
+          "Work in Scrum within multidisciplinary teams, and train and mentor interns and junior developers."
+        ]
+      },
+      "projects": [
+        {
+          "name": {
+            "es": "Catálogo interno de herramientas (en desarrollo)",
+            "en": "Internal tools catalogue (in progress)"
+          },
+          "role": {
+            "es": "Full-stack · responsable técnica",
+            "en": "Full-stack · technical owner"
+          },
+          "text": {
+            "es": "Diseño y desarrollo de la aplicación completa: modelo de datos en PostgreSQL/PostGIS, API REST en FastAPI y frontend en Angular. Implanté Keycloak con autenticación de doble factor e integré, con permisos compartidos, otra aplicación de CARTIF que desarrollé junto a un compañero y adapté para la integración.",
+            "en": "Designed and built the whole application: PostgreSQL/PostGIS data model, FastAPI REST API and Angular frontend. Set up Keycloak with two-factor authentication and embedded, with shared permissions, another CARTIF application I built with a colleague and adapted for the integration."
+          }
+        },
+        {
+          "name": {
+            "es": "Extracción de tickets y facturas con IA",
+            "en": "Receipt and invoice extraction with AI"
+          },
+          "role": {
+            "es": "Backend e IA · equipo de 2",
+            "en": "Backend & AI · team of 2"
+          },
+          "text": {
+            "es": "API en FastAPI que clasifica fotografías de tickets y facturas con un modelo de visión local (Ollama) y extrae categoría, importe y moneda en JSON estructurado, rechazando documentos ilegibles o no válidos. Los datos no salen de la infraestructura propia.",
+            "en": "FastAPI API that classifies photos of receipts and invoices with a local vision model (Ollama) and extracts category, amount and currency as structured JSON, rejecting unreadable or invalid documents. Data never leaves the company's infrastructure."
+          }
+        },
+        {
+          "name": {
+            "es": "Climres (en desarrollo)",
+            "en": "Climres (in progress)"
+          },
+          "role": {
+            "es": "Backend",
+            "en": "Backend"
+          },
+          "text": {
+            "es": "Base de datos geoespacial en PostgreSQL/PostGIS para datos GeoJSON, API REST en FastAPI y scripts de migración en Python para integrar datos en CSV y JSON.",
+            "en": "Geospatial PostgreSQL/PostGIS database for GeoJSON data, FastAPI REST API and Python migration scripts to integrate CSV and JSON data."
+          }
+        },
+        {
+          "name": {
+            "es": "Smarteestory (en desarrollo)",
+            "en": "Smarteestory (in progress)"
+          },
+          "role": {
+            "es": "Frontend",
+            "en": "Frontend"
+          },
+          "text": {
+            "es": "Gemelo digital de un edificio: visor de modelos IFC/BIM (That Open), datos de sensores desde una API externa y gestor documental completo.",
+            "en": "Building digital twin: IFC/BIM model viewer (That Open), sensor data from an external API and a full document manager."
+          }
+        },
+        {
+          "name": {
+            "es": "Spandam y RethinkAction",
+            "en": "Spandam and RethinkAction"
+          },
+          "role": {
+            "es": "Frontend",
+            "en": "Frontend"
+          },
+          "text": {
+            "es": "Herramientas de apoyo a la decisión con mapas interactivos, gráficas y cálculos asíncronos. En Spandam propuse mejoras de diseño sobre Figma e implementé la interfaz bilingüe y los tests E2E con Cypress.",
+            "en": "Decision-support tools with interactive maps, charts and asynchronous calculations. On Spandam I proposed design improvements on top of Figma and built the bilingual interface and the Cypress E2E tests."
+          }
+        },
+        {
+          "name": {
+            "es": "Otros proyectos frontend",
+            "en": "Other frontend projects"
+          },
+          "role": {
+            "es": "Hydro4u y Rehouse (en desarrollo), Build Space, Nevermore",
+            "en": "Hydro4u and Rehouse (in progress), Build Space, Nevermore"
+          },
+          "text": {
+            "es": "Interfaces con Angular, Leaflet, ECharts y librerías de componentes (ng-zorro, PrimeNG, Clarity): visualización de modelos de predicción, gestión documental, proyectos colaborativos y cartografía.",
+            "en": "Interfaces with Angular, Leaflet, ECharts and component libraries (ng-zorro, PrimeNG, Clarity): prediction model visualisation, document management, collaborative projects and mapping."
+          }
+        }
+      ]
+    },
+    {
+      "role": {
+        "es": "Desarrolladora web en prácticas (contrato de formación)",
+        "en": "Web Developer Intern (training contract)"
+      },
+      "company": "CARTIF",
+      "location": {
+        "es": "Boecillo (Valladolid)",
+        "en": "Boecillo (Valladolid), Spain"
+      },
+      "start": {
+        "es": "mar. 2023",
+        "en": "Mar 2023"
+      },
+      "end": {
+        "es": "may. 2023",
+        "en": "May 2023"
+      },
+      "bullets": {
+        "es": [
+          "Desarrollé funcionalidades completas para la intranet corporativa con Angular, .NET y PostgreSQL, trabajando con autorización segura basada en JWT y despliegue mediante CI/CD."
+        ],
+        "en": [
+          "Built end-to-end features for the corporate intranet with Angular, .NET and PostgreSQL, working with secure JWT-based authorisation and CI/CD deployment."
+        ]
+      },
+      "projects": []
+    }
+  ],
+  "personal": [
+    {
+      "name": {
+        "es": "Portfolio interactivo con asistente RAG",
+        "en": "Interactive portfolio with a RAG assistant"
+      },
+      "text": {
+        "es": "Web personal con una galaxia en 3D (Next.js, React Three Fiber) y un asistente que responde sobre mi perfil: RAG con LangGraph y búsqueda híbrida, compatible con modelos locales (Ollama) y en la nube (OpenAI, Anthropic).",
+        "en": "Personal website with a 3D galaxy (Next.js, React Three Fiber) and an assistant that answers questions about my profile: RAG with LangGraph and hybrid search, compatible with local (Ollama) and cloud models (OpenAI, Anthropic)."
+      }
+    },
+    {
+      "name": {
+        "es": "Chatbot educativo con RAG (en desarrollo)",
+        "en": "Educational RAG chatbot (in progress)"
+      },
+      "text": {
+        "es": "Asistente para un proyecto educativo basado en un sistema RAG propio con LlamaIndex, diseñado para funcionar con modelos locales y en la nube.",
+        "en": "Assistant for an educational project built on a custom LlamaIndex RAG system, designed to run on both local and cloud models."
+      }
+    }
+  ],
+  "education": [
+    {
+      "title": {
+        "es": "Fundamentos y herramientas para la IA generativa (formación de empresa)",
+        "en": "Fundamentals and tools for generative AI (in-company training)"
+      },
+      "org": "Universidad Politécnica de Madrid",
+      "year": "2026",
+      "text": {
+        "es": "Transformers y atención, entrenamiento de modelos (overfitting, underfitting, data augmentation), Hugging Face, LangChain, LangGraph, Langfuse y RAG.",
+        "en": "Transformers and attention, model training (overfitting, underfitting, data augmentation), Hugging Face, LangChain, LangGraph, Langfuse and RAG."
+      }
+    },
+    {
+      "title": {
+        "es": "Machine Learning y Deep Learning (formación de empresa)",
+        "en": "Machine Learning and Deep Learning (in-company training)"
+      },
+      "org": "Universidad de Valladolid",
+      "year": "2025",
+      "text": {
+        "es": "Fundamentos matemáticos y algoritmos de ML y DL: redes neuronales, backpropagation, funciones de activación, embeddings y transformers. Prácticas con PyTorch, pandas y NumPy.",
+        "en": "Mathematical foundations and algorithms of ML and DL: neural networks, backpropagation, activation functions, embeddings and transformers. Hands-on work with PyTorch, pandas and NumPy."
+      }
+    },
+    {
+      "title": {
+        "es": "Aprende FastAPI desde cero",
+        "en": "Learn FastAPI from scratch"
+      },
+      "org": "Udemy",
+      "year": "2025",
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    },
+    {
+      "title": {
+        "es": "Técnico Superior en Desarrollo de Aplicaciones Web (FP de Grado Superior)",
+        "en": "Higher Vocational Diploma in Web Application Development"
+      },
+      "org": "IES Galileo, Valladolid",
+      "year": "2021 – 2023",
+      "text": {
+        "es": "",
+        "en": ""
+      }
+    }
+  ],
+  "languages": {
+    "es": "Español: nativo · Inglés: profesional",
+    "en": "Spanish: native · English: professional working proficiency"
+  },
+  "availability": {
+    "es": "Trabajo en remoto y asíncrono, como empleada o como freelance con dedicación fija (horas semanales durante un periodo acordado).",
+    "en": "Remote, asynchronous work, either employed or as a freelancer on a fixed commitment (a set number of hours per week for an agreed period)."
+  }
+}

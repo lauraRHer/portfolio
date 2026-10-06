@@ -1,0 +1,27 @@
+# OS / editors
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Env files (never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+back/data/
+
+# Node
+node_modules/
+cv/dist/
+
+# Logs and local tool state
+*.log
+.claude/
