@@ -72,6 +72,9 @@ class Settings(BaseSettings):
     app_name: str = "Portfolio API"
     environment: Literal["development", "production", "test"] = "development"
     log_level: str = "INFO"
+    #: Write each visitor question (sanitized, without IP) to the chat log line, to see
+    #: what people ask and what the knowledge base is missing.
+    log_questions: bool = True
     cors_origins: list[str] = Field(
         default_factory=lambda: ["http://localhost:3000", "http://localhost:3100"]
     )

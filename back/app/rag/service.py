@@ -96,7 +96,13 @@ class ChatService:
 
         kind: AnswerKind = state["kind"]
         language: Language = state.get("language", locale)
-        log.info("chat kind=%s lang=%s trace=%s", kind, language, state.get("trace"))
+        if self._settings.log_questions:
+            # %r escapes newlines: a question cannot forge extra log lines
+            log.info(
+                "chat kind=%s lang=%s q=%r trace=%s", kind, language, question, state.get("trace")
+            )
+        else:
+            log.info("chat kind=%s lang=%s trace=%s", kind, language, state.get("trace"))
 
         if kind != AnswerKind.ANSWER:
             for event in self._canned(kind, language):

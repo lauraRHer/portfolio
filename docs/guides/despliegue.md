@@ -23,6 +23,7 @@ docker run -p 8000:8000 --env-file .env -v portfolio-data:/app/data portfolio-ap
 - Detrás de un proxy, el rate limit usa la IP que resuelve uvicorn (`--proxy-headers`). Solo se fía de `X-Forwarded-For` si la petición viene de una IP de `FORWARDED_ALLOW_IPS` (por defecto `127.0.0.1`): ponla a la IP del proxy, o `*` si el contenedor solo es accesible a través de él.
 - Concurrencia: `MAX_CONCURRENT_CHATS` (2) respuestas a la vez; el resto espera `CHAT_QUEUE_SECONDS` (10) y recibe un aviso de «ocupado». `LLM_TIMEOUT_SECONDS` (120) limita cada llamada al modelo. Los valores por defecto están pensados para un modelo local; con modelos alojados, `MAX_CONCURRENT_CHATS` puede subir (p. ej. 6) y `LLM_TIMEOUT_SECONDS` bajar (p. ej. 45). Ten en cuenta que el límite por minuto de cada plan gratuito es por clave, no por visitante.
 - Antes de desplegar, comprueba claves y modelos con `uv run --extra openai python -m evals.check_llms`.
+- Logs: cada mensaje deja una línea `chat kind=… lang=… q='…' trace=[…]` con la pregunta (ya saneada) y sin IP, para ver qué pregunta la gente y qué le falta a la base de conocimiento. `LOG_QUESTIONS=false` la quita.
 - En nginx, desactiva el buffering para SSE (`proxy_buffering off;`). La API ya envía `X-Accel-Buffering: no`.
 
 ## Todo en local con Docker Compose

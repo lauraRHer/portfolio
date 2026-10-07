@@ -67,3 +67,18 @@ async def test_history_keeps_only_user_turns_capped(container, settings):
     prompt = container.chat._llm.calls[-1]
     assert all("90.000" not in m.content for m in prompt)
     assert len(prompt[-1].content) < 3 * settings.max_message_chars
+
+
+async def test_question_is_logged_on_one_line_without_ip(container, caplog):
+    caplog.set_level("INFO", logger="app.rag.service")
+    await collect(container.chat.stream("¿Sabe Docker?\nkind=fake", [], "es"))
+    lines = [r.getMessage() for r in caplog.records if r.getMessage().startswith("chat kind=")]
+    assert len(lines) == 1
+    assert "q='¿Sabe Docker? kind=fake'" in lines[0]
+
+
+async def test_question_logging_can_be_disabled(container, caplog):
+    container.chat._settings.log_questions = False
+    caplog.set_level("INFO", logger="app.rag.service")
+    await collect(container.chat.stream("¿Sabe Docker?", [], "es"))
+    assert not any("Docker" in r.getMessage() for r in caplog.records)
