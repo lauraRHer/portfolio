@@ -43,8 +43,8 @@ data: {}
 
 | Evento | Cuándo | Datos |
 |---|---|---|
-| `meta` | siempre, el primero | `kind`: `answer` \| `greeting` \| `refusal` \| `no_info` \| `busy` (demasiados chats a la vez); `sources`: secciones de la web usadas |
-| `token` | uno o más | `text`: fragmento de la respuesta (en `greeting`, `refusal`, `no_info` y `busy` llega el texto fijo completo en un único token) |
+| `meta` | siempre, el primero | `kind`: `answer` \| `greeting` \| `refusal` \| `no_info` \| `busy` (demasiados chats a la vez) \| `unavailable` (ningún modelo tiene cuota ahora mismo); `sources`: secciones de la web usadas. En `answer` llega justo antes del primer token: hasta entonces la respuesta aún puede convertirse en `unavailable` |
+| `token` | uno o más | `text`: fragmento de la respuesta (en `greeting`, `refusal`, `no_info`, `busy` y `unavailable` llega el texto fijo completo en un único token) |
 | `done` | fin correcto | `{}` |
 | `error` | fallo del pipeline o del LLM a mitad del stream | `message`: `pipeline_error` \| `llm_error` |
 

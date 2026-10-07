@@ -5,17 +5,60 @@ model in production is a configuration change, not a code change.
 See docs/guides/cambiar-proveedor-llm.md.
 """
 
+from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Literal, get_args
+from urllib.parse import parse_qsl
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-LLMProviderName = Literal["ollama", "openai", "anthropic"]
-EmbeddingProviderName = Literal["ollama", "openai"]
+#: groq, gemini and openrouter are OpenAI-compatible presets (base URL + their own key).
+LLMProviderName = Literal["ollama", "openai", "anthropic", "groq", "gemini", "openrouter"]
+EmbeddingProviderName = Literal["ollama", "openai", "gemini"]
+
+#: Per-model options accepted after "?" in a chain entry.
+_MODEL_OPTIONS = {"reasoning_effort"}
+
+
+@dataclass(frozen=True)
+class ModelSpec:
+    provider: LLMProviderName
+    model: str
+    options: dict[str, str] = field(default_factory=dict, compare=False, hash=False)
+
+    @property
+    def name(self) -> str:
+        return f"{self.provider}:{self.model}"
+
+
+def parse_chain(raw: str) -> list[ModelSpec]:
+    """`"groq:openai/gpt-oss-120b?reasoning_effort=low, gemini:gemini-3.5-flash-lite"` → specs.
+
+    Only the first ":" separates provider and model, so model ids with colons
+    (`qwen2.5:3b`, `…:free`) work as they are.
+    """
+    specs = []
+    for item in (part.strip() for part in raw.split(",")):
+        if not item:
+            continue
+        ref, _, query = item.partition("?")
+        provider, sep, model = (x.strip() for x in ref.partition(":"))
+        if not sep or not model or provider not in get_args(LLMProviderName):
+            raise ValueError(
+                f"Invalid model {item!r}: expected provider:model, "
+                f"provider one of {', '.join(get_args(LLMProviderName))}"
+            )
+        options = dict(parse_qsl(query))
+        if unknown := set(options) - _MODEL_OPTIONS:
+            raise ValueError(f"Unknown option(s) {sorted(unknown)} in {item!r}")
+        specs.append(ModelSpec(provider, model, options))  # type: ignore[arg-type]
+    if not specs:
+        raise ValueError("Empty model chain")
+    return specs
 
 
 class Settings(BaseSettings):
@@ -43,6 +86,23 @@ class Settings(BaseSettings):
     llm_max_tokens: int = 400
     #: Optional cheaper/faster model for the scope classifier (defaults to llm_model).
     classifier_model: str | None = None
+    #: Fallback chain "provider:model, provider:model, …" (overrides LLM_PROVIDER/LLM_MODEL).
+    #: Tried in order: a model that hits its rate limit or daily quota, fails or
+    #: doesn't start answering in time is skipped for a while and the next one answers.
+    #: That is what makes free tiers usable in production. See docs/guides/cambiar-proveedor-llm.md.
+    llm_chain: str | None = None
+    #: Chain for the scope classifier. Empty = LLM_CHAIN (or CLASSIFIER_MODEL if set).
+    classifier_chain: str | None = None
+    #: The classifier only replies with a label. Reasoning models spend tokens thinking
+    #: first and need more (or `?reasoning_effort=none|low` in the chain entry).
+    classifier_max_tokens: int = 8
+    #: Longest wait for a model's first token before moving on to the next one in the
+    #: chain. The last model left is never cut short (LLM_TIMEOUT_SECONDS still bounds it).
+    llm_attempt_timeout_seconds: float = 20
+    #: How long a model that failed is skipped, by cause of the failure.
+    llm_cooldown_rate_limit_seconds: float = 60  # per-minute limit without Retry-After
+    llm_cooldown_quota_seconds: float = 3600  # daily quota, invalid key, model removed
+    llm_cooldown_error_seconds: float = 30  # server error, network error, timeout
 
     # --- Embeddings ------------------------------------------------------------
     embedding_provider: EmbeddingProviderName = "ollama"
@@ -51,6 +111,11 @@ class Settings(BaseSettings):
     #: models get "search_query: " / "search_document: ", any other model none.
     embedding_query_prefix: str | None = None
     embedding_document_prefix: str | None = None
+    #: Output size for models that support it (gemini-embedding-001: 3072 by default,
+    #: 768 keeps the index small with almost the same quality). Unset = model default.
+    embedding_dimensions: int | None = None
+    #: Upper bound for embedding one question; on failure retrieval uses BM25 only.
+    embedding_timeout_seconds: float = 10
 
     # --- Provider endpoints / keys ---------------------------------------------
     ollama_base_url: str = "http://localhost:11434"
@@ -59,6 +124,9 @@ class Settings(BaseSettings):
     openai_api_key: str | None = None
     openai_base_url: str | None = None  # any OpenAI-compatible server (vLLM, Groq, …)
     anthropic_api_key: str | None = None
+    groq_api_key: str | None = None
+    gemini_api_key: str | None = None
+    openrouter_api_key: str | None = None
 
     # --- RAG -------------------------------------------------------------------
     knowledge_dir: Path = BASE_DIR / "knowledge"
@@ -92,6 +160,27 @@ class Settings(BaseSettings):
 
     # --- Public facts used in canned replies -----------------------------------
     contact_email: str = "laurarodrigohernando@gmail.com"
+
+    @model_validator(mode="after")
+    def _check_chains(self) -> "Settings":
+        # Fail at startup on a typo instead of on the first chat.
+        self.answer_models  # noqa: B018
+        self.classifier_models  # noqa: B018
+        return self
+
+    @property
+    def answer_models(self) -> list[ModelSpec]:
+        if self.llm_chain:
+            return parse_chain(self.llm_chain)
+        return [ModelSpec(self.llm_provider, self.llm_model)]
+
+    @property
+    def classifier_models(self) -> list[ModelSpec]:
+        if self.classifier_chain:
+            return parse_chain(self.classifier_chain)
+        if self.classifier_model and not self.llm_chain:
+            return [ModelSpec(self.llm_provider, self.classifier_model)]
+        return self.answer_models
 
     @property
     def query_prefix(self) -> str:

@@ -1,3 +1,3 @@
-from .factory import build_classifier_llm, build_llm
+from .factory import build_llms
 
-__all__ = ["build_llm", "build_classifier_llm"]
+__all__ = ["build_llms"]

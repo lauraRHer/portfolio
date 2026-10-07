@@ -9,7 +9,7 @@ from pathlib import Path
 from app.core.config import Settings
 from app.domain.ports import EmbeddingProvider, LLMProvider, VectorStore
 from app.providers.embeddings import build_embeddings
-from app.providers.llm import build_classifier_llm, build_llm
+from app.providers.llm import build_llms
 from app.providers.vectorstore import ChromaVectorStore
 from app.providers.vectorstore.chroma_store import collection_name_for
 from app.rag.graph import build_chat_graph
@@ -64,10 +64,11 @@ def assemble(
 def build_container(settings: Settings) -> Container:
     embeddings = build_embeddings(settings)
     collection = collection_name_for(embeddings.name)
+    llm, classifier = build_llms(settings)
     return assemble(
         settings,
-        llm=build_llm(settings),
-        classifier=build_classifier_llm(settings),
+        llm=llm,
+        classifier=classifier,
         embeddings=embeddings,
         store=ChromaVectorStore(settings.chroma_path, collection),
         index_marker=settings.chroma_path / f"{collection}.fingerprint",

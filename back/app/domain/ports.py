@@ -12,6 +12,13 @@ from typing import Protocol, runtime_checkable
 from .models import Chunk, Message, RetrievedChunk
 
 
+class LLMUnavailableError(RuntimeError):
+    """No model can answer right now (e.g. every free-tier quota is used up).
+
+    The chat turns it into a friendly canned reply instead of a generic error.
+    """
+
+
 @runtime_checkable
 class LLMProvider(Protocol):
     """A chat model."""

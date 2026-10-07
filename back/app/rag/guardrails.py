@@ -125,6 +125,12 @@ def canned_reply(kind: AnswerKind, language: Language, email: str) -> str:
             "en": "I'm busy answering other questions right now. Please try again in a few "
             f"seconds or email Laura: {email}",
         },
+        AnswerKind.UNAVAILABLE: {
+            "es": "Uff, hoy ya he contestado tantas preguntas que estoy algo mareado 😵‍💫 "
+            f"Mejor pregúntale a Laura directamente: {email}",
+            "en": "Phew, I've answered so many questions today that I'm a bit dizzy 😵‍💫 "
+            f"Better ask Laura directly: {email}",
+        },
         AnswerKind.GREETING: {
             "es": "¡Hola! Soy el asistente de Laura. Puedo contarte sobre su experiencia, "
             "sus proyectos, su stack o cómo contactarla. ¿Qué te gustaría saber?",

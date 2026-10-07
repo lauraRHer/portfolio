@@ -9,7 +9,7 @@ from typing import Any
 
 from app.core.config import Settings
 from app.domain.models import AnswerKind, Language, Message, RetrievedChunk
-from app.domain.ports import LLMProvider
+from app.domain.ports import LLMProvider, LLMUnavailableError
 
 from . import guardrails
 
@@ -98,16 +98,9 @@ class ChatService:
         language: Language = state.get("language", locale)
         log.info("chat kind=%s lang=%s trace=%s", kind, language, state.get("trace"))
 
-        yield ChatEvent(
-            "meta", {"kind": kind.value, "sources": _sources(state.get("relevant", []))}
-        )
-
         if kind != AnswerKind.ANSWER:
-            yield ChatEvent(
-                "token",
-                {"text": guardrails.canned_reply(kind, language, self._settings.contact_email)},
-            )
-            yield ChatEvent("done", {})
+            for event in self._canned(kind, language):
+                yield event
             return
 
         t0, first = time.perf_counter(), None
@@ -121,10 +114,26 @@ class ChatService:
                     break
                 if first is None:
                     first = time.perf_counter() - t0
+                    # `meta` waits for the first token: until then the answer could
+                    # still turn into the "out of quota" canned reply.
+                    sources = _sources(state.get("relevant", []))
+                    yield ChatEvent("meta", {"kind": kind.value, "sources": sources})
                 yield ChatEvent("token", {"text": token})
+        except LLMUnavailableError:
+            if first is not None:  # pragma: no cover - fallback only switches before 1st token
+                yield ChatEvent("error", {"message": "llm_error"})
+                return
+            log.warning("chat kind=unavailable (no model left)")
+            for event in self._canned(AnswerKind.UNAVAILABLE, language):
+                yield event
+            return
         except Exception:
             log.exception("LLM streaming failed")
+            if first is None:
+                yield ChatEvent("meta", {"kind": kind.value, "sources": []})
             yield ChatEvent("error", {"message": "llm_error"})
             return
+        if first is None:  # empty answer: keep the protocol (meta always comes first)
+            yield ChatEvent("meta", {"kind": kind.value, "sources": []})
         log.info("generation first_token=%.1fs total=%.1fs", first or 0, time.perf_counter() - t0)
         yield ChatEvent("done", {})

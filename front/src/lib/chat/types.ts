@@ -7,7 +7,7 @@ export type ChatRole = "user" | "assistant";
 export type ChatTurn = { role: ChatRole; content: string };
 
 /** How the backend classified the question. */
-export type AnswerKind = "answer" | "greeting" | "refusal" | "no_info" | "busy";
+export type AnswerKind = "answer" | "greeting" | "refusal" | "no_info" | "busy" | "unavailable";
 
 export type ChatSource = {
   id: string;

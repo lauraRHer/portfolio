@@ -42,6 +42,8 @@ class AnswerKind(StrEnum):
     REFUSAL = "refusal"
     NO_INFO = "no_info"
     BUSY = "busy"
+    #: Every model is out of quota / failing: friendly "ask Laura" reply.
+    UNAVAILABLE = "unavailable"
 
 
 class Scope(StrEnum):

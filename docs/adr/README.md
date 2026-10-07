@@ -9,3 +9,5 @@ Decisiones de arquitectura relevantes, con contexto y consecuencias. Formato bre
 | [0003](0003-next-intl-sin-plugin.md) | next-intl sin su plugin de Next |
 | [0004](0004-backend-hexagonal-agnostico.md) | Backend hexagonal y agnóstico de modelo |
 | [0005](0005-busqueda-hibrida.md) | Búsqueda híbrida (vectores + BM25) y router LLM |
+| [0006](0006-cadena-fallback-modelos-gratuitos.md) | Cadena de fallback de modelos gratuitos en producción |
+| [0007](0007-embeddings-gemini-con-bm25.md) | Embeddings de Gemini con BM25 de respaldo |

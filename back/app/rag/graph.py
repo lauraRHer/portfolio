@@ -5,11 +5,13 @@
                    └─→ retrieve ─┴→ decide → END  (answer | greeting | refusal | no_info)
 
 `classify` (LLM scope router) and `retrieve` (hybrid search: vectors + BM25,
-fused with Reciprocal Rank Fusion) run in parallel. `decide` combines both signals:
+fused with Reciprocal Rank Fusion) run in parallel. If the embedding provider
+fails (e.g. free-tier quota), `retrieve` degrades to BM25 only. `decide` combines both signals:
   - GREETING                                   → canned greeting
   - OFF_TOPIC                                  → refusal
     (unless the guard saw a skill question about Laura, e.g. "¿Laura sabe X?")
-  - classifier unavailable and retrieval weak  → refusal
+  - classifier unavailable and retrieval weak  → refusal, or "I'm out of
+    steam today" if no model has quota left (a refusal would blame the visitor)
   - no chunk above the relevance threshold     → "I don't have that info"
   - otherwise                                  → answer prompt for the LLM
 
@@ -27,7 +29,7 @@ from langgraph.graph import END, START, StateGraph
 
 from app.core.config import Settings
 from app.domain.models import AnswerKind, Language, Message, RetrievedChunk, Scope
-from app.domain.ports import EmbeddingProvider, LLMProvider, VectorStore
+from app.domain.ports import EmbeddingProvider, LLMProvider, LLMUnavailableError, VectorStore
 
 from . import guardrails, prompts
 from .lexical import BM25Index, tokenize
@@ -43,6 +45,8 @@ class ChatState(TypedDict, total=False):
     # derived
     language: Language
     scope: Scope | None
+    #: The classifier had no model left to call (every quota used up).
+    llm_unavailable: bool
     #: Deterministic hint that the question is about Laura (overrides OFF_TOPIC).
     about_laura: bool
     retrieved: list[RetrievedChunk]
@@ -94,6 +98,14 @@ def build_chat_graph(
                 timeout=settings.llm_timeout_seconds,
             )
             scope = parse_scope(raw)
+        except LLMUnavailableError:
+            log.warning("Scope classifier: no model available")
+            elapsed = time.perf_counter() - t0
+            return {
+                "scope": None,
+                "llm_unavailable": True,
+                "trace": [f"classify:UNAVAILABLE:{elapsed:.1f}s"],
+            }
         except Exception:
             log.exception("Scope classifier failed")
             scope = None
@@ -111,8 +123,17 @@ def build_chat_graph(
         if earlier and len(tokenize(question)) <= settings.followup_max_terms:
             question = f"{earlier[-1]} {question}"
         k = settings.retrieval_top_k
-        vector = await embeddings.embed_query(question)
-        vec_hits = await store.search(vector, k=k * 2)
+        vector_down = ""
+        try:
+            vector = await asyncio.wait_for(
+                embeddings.embed_query(question), settings.embedding_timeout_seconds
+            )
+            vec_hits = await store.search(vector, k=k * 2)
+        except Exception:
+            # Hosted embeddings have quotas too: keyword search alone still finds
+            # most answers (names, technologies, companies) instead of failing.
+            log.exception("Vector search failed: using BM25 only")
+            vec_hits, vector_down = [], ":vector_down"
         lex_hits = lexical.search(question, k=k * 2)
 
         # Reciprocal Rank Fusion: robust way to merge rankings with different score scales.
@@ -156,7 +177,9 @@ def build_chat_graph(
             "retrieved": top,
             "best_vector": best,
             "best_lexical": best_lex,
-            "trace": [f"retrieve:best={best:.2f}:hits={len(top)}{followup}:{elapsed:.1f}s"],
+            "trace": [
+                f"retrieve:best={best:.2f}:hits={len(top)}{followup}{vector_down}:{elapsed:.1f}s"
+            ],
         }
 
     async def decide(state: ChatState) -> ChatState:
@@ -175,6 +198,9 @@ def build_chat_graph(
                 and state.get("best_lexical", 0.0) >= 2 * settings.retrieval_lexical_min_score
             )
             refuse = not convincing
+        if refuse and state.get("llm_unavailable"):
+            # Not the visitor's fault: the question may be fine, we're just out of quota.
+            return {"kind": AnswerKind.UNAVAILABLE, "relevant": [], "trace": ["decide:unavailable"]}
         if refuse:
             return {"kind": AnswerKind.REFUSAL, "relevant": [], "trace": ["decide:refusal"]}
         if not relevant:

@@ -86,3 +86,27 @@ class SlowLLM(FakeLLM):
         for word in self.reply.split(" "):
             await asyncio.sleep(self.delay)
             yield word + " "
+
+
+class ExhaustedLLM(FakeLLM):
+    """Every model of the fallback chain is out of quota."""
+
+    async def complete(self, messages: Sequence[Message]) -> str:
+        from app.domain.ports import LLMUnavailableError
+
+        raise LLMUnavailableError("no model left")
+
+    async def stream(self, messages: Sequence[Message]) -> AsyncIterator[str]:
+        from app.domain.ports import LLMUnavailableError
+
+        raise LLMUnavailableError("no model left")
+        yield  # pragma: no cover - makes this an async generator
+
+
+class FailingEmbeddings(HashEmbeddings):
+    """Indexes fine, then the provider runs out of quota for queries."""
+
+    name = "fake:failing-embeddings"
+
+    async def embed_query(self, text: str) -> list[float]:
+        raise ConnectionError("429 quota exceeded")

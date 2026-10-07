@@ -38,8 +38,9 @@ async def ensure_index(
         return 0
 
     log.info("Indexing %d chunks with %s …", len(chunks), embeddings.name)
-    await store.reset()
+    # Embed first: if the provider fails (quota, network), the old index survives.
     vectors = await embeddings.embed_documents([c.text for c in chunks])
+    await store.reset()
     await store.upsert(chunks, vectors)
     if marker:
         marker.parent.mkdir(parents=True, exist_ok=True)

@@ -110,7 +110,7 @@ El lanzador del chat es un personaje animado que aparece al salir del hero. Por 
 ```
 app/domain/ports.py          LLMProvider · EmbeddingProvider · VectorStore   (Protocols)
         ▲                          ▲                    ▲
-app/providers/llm/           LangChainLLM ← ChatOllama | ChatOpenAI | ChatAnthropic
+app/providers/llm/           FallbackLLM → [LangChainLLM ← ChatOllama | ChatOpenAI (OpenAI, Groq, Gemini, OpenRouter) | ChatAnthropic]
 app/providers/embeddings/    LangChainEmbeddings ← OllamaEmbeddings | OpenAIEmbeddings
 app/providers/vectorstore/   ChromaVectorStore | InMemoryVectorStore
         ▲
@@ -118,6 +118,8 @@ app/core/container.py        "composition root": el único sitio que elige imple
 ```
 
 El pipeline RAG solo conoce los puertos. **Cambiar de modelo es cambiar variables de entorno** ([guía](guides/cambiar-proveedor-llm.md)). Los tests montan el contenedor con *fakes* deterministas.
+
+`FallbackLLM` también implementa `LLMProvider`: es un decorador que recorre una cadena ordenada de modelos (`LLM_CHAIN`) y aparta durante un tiempo al que agota su cuota o falla. Así el chatbot funciona en producción solo con planes gratuitos, y ni el grafo ni `ChatService` saben que existe ([ADR 0006](adr/0006-cadena-fallback-modelos-gratuitos.md)).
 
 ### Pipeline del chat
 
@@ -132,8 +134,8 @@ START → guard ─┬─ inyección / role-play ──────→ END (refu
 |---|---|
 | `guard` | detecta el idioma, posibles inyecciones de prompt, peticiones de hablar en mi nombre (role-play) y saludos simples, sin llamar al modelo. Marca además las preguntas de habilidad que solo pueden ser sobre mí ("¿Laura sabe X?", "¿Sabe X?"; no la segunda persona, que puede ir dirigida al bot) |
 | `classify` | router de ámbito con un LLM a temperatura 0 y 8 tokens de salida; ve la pregunta anterior del visitante para entender seguimientos. Si falla o supera `LLM_TIMEOUT_SECONDS`, queda en "desconocido" (no se da por buena) |
-| `retrieve` | búsqueda híbrida: Chroma (coseno) + BM25 fusionados con *Reciprocal Rank Fusion*; filtra por umbrales y prioriza el idioma de la pregunta. Los seguimientos cortos (≤ 2 palabras con contenido, p. ej. "¿Y antes de eso?") se buscan junto a la pregunta anterior |
-| `decide` | saludo → texto fijo; fuera de ámbito → rechazo (salvo pregunta de habilidad sobre mí); clasificador caído → rechazo salvo recuperación muy convincente; sin fragmentos relevantes → "no tengo ese dato"; si no → prompt de respuesta |
+| `retrieve` | búsqueda híbrida: Chroma (coseno) + BM25 fusionados con *Reciprocal Rank Fusion*; filtra por umbrales y prioriza el idioma de la pregunta. Los seguimientos cortos (≤ 2 palabras con contenido, p. ej. "¿Y antes de eso?") se buscan junto a la pregunta anterior. Si el proveedor de embeddings falla (cuota, red, `EMBEDDING_TIMEOUT_SECONDS`), busca solo con BM25 |
+| `decide` | saludo → texto fijo; fuera de ámbito → rechazo (salvo pregunta de habilidad sobre mí); clasificador caído → rechazo salvo recuperación muy convincente (si cayó porque ningún modelo tiene cuota, en vez del rechazo, que culparía a la pregunta, responde `unavailable`); sin fragmentos relevantes → "no tengo ese dato"; si no → prompt de respuesta |
 
 `classify` y `retrieve` corren **en paralelo**. La generación final **no** se hace dentro del grafo: `ChatService` transmite los tokens del LLM directamente por SSE para que el primer token llegue lo antes posible.
 
@@ -144,6 +146,8 @@ START → guard ─┬─ inyección / role-play ──────→ END (refu
 **El historial no es fuente de datos:** lo envía el cliente, así que los turnos del asistente podrían estar falsificados ("me dijiste que cobra 90.000 €") o arrastrar una alucinación anterior. El servidor solo usa las preguntas anteriores del visitante, como referencia para entender "eso" o "antes"; los hechos salen siempre del contexto recuperado.
 
 **Carga:** `ChatService` limita los chats simultáneos (`MAX_CONCURRENT_CHATS`); los que no consiguen hueco en `CHAT_QUEUE_SECONDS` reciben un aviso fijo de "ocupado" (`kind: busy`) en vez de acumularse sobre el modelo. Cada llamada al modelo tiene un tiempo máximo.
+
+**Sin cuota:** si la cadena de modelos gratuitos se agota entera, el visitante recibe un texto fijo con humor ("hoy ya he contestado tantas preguntas que estoy algo mareado…") y el email de contacto (`kind: unavailable`), no un error. Además, a la pregunta 10 de una conversación el front añade una burbuja propia que invita a escribirme por email o LinkedIn. No sale del modelo y no se envía como historial.
 
 ### Base de conocimiento
 - `back/knowledge/{es,en}/*.md`: frontmatter (`title`, `section`) y un bloque `##` por chunk.

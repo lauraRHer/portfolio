@@ -4,7 +4,7 @@
 | Parte | Dónde | Notas |
 |---|---|---|
 | Front | **Vercel** (o cualquier hosting Node / contenedor) | Variables: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL` |
-| Back | **Railway / Fly.io / Render / VPS** con Docker | Modelo alojado (OpenAI, Groq, Anthropic…): un VPS sin GPU es demasiado lento para LLMs locales |
+| Back | **Railway / Fly.io / Render / VPS** con Docker | Modelos alojados: un VPS sin GPU es demasiado lento para LLMs locales. Con planes gratuitos, usa una [cadena de fallback](cambiar-proveedor-llm.md#producción-con-modelos-gratuitos-cadena-de-fallback) (`LLM_CHAIN`) |
 
 ## Back con Docker
 ```bash
@@ -15,7 +15,8 @@ docker run -p 8000:8000 --env-file .env -v portfolio-data:/app/data portfolio-ap
 - Monta `/app/data` como volumen: es el índice de Chroma.
 - `CORS_ORIGINS=["https://tu-dominio.com"]`.
 - Detrás de un proxy, el rate limit usa la IP que resuelve uvicorn (`--proxy-headers`). Solo se fía de `X-Forwarded-For` si la petición viene de una IP de `FORWARDED_ALLOW_IPS` (por defecto `127.0.0.1`): ponla a la IP del proxy, o `*` si el contenedor solo es accesible a través de él.
-- Concurrencia: `MAX_CONCURRENT_CHATS` (2) respuestas a la vez; el resto espera `CHAT_QUEUE_SECONDS` (10) y recibe un aviso de «ocupado». `LLM_TIMEOUT_SECONDS` (120) limita cada llamada al modelo.
+- Concurrencia: `MAX_CONCURRENT_CHATS` (2) respuestas a la vez; el resto espera `CHAT_QUEUE_SECONDS` (10) y recibe un aviso de «ocupado». `LLM_TIMEOUT_SECONDS` (120) limita cada llamada al modelo. Los valores por defecto están pensados para un modelo local; con modelos alojados, `MAX_CONCURRENT_CHATS` puede subir (p. ej. 6) y `LLM_TIMEOUT_SECONDS` bajar (p. ej. 45). Ten en cuenta que el límite por minuto de cada plan gratuito es por clave, no por visitante.
+- Antes de desplegar, comprueba claves y modelos con `uv run --extra openai python -m evals.check_llms`.
 - En nginx, desactiva el buffering para SSE (`proxy_buffering off;`). La API ya envía `X-Accel-Buffering: no`.
 
 ## Todo en local con Docker Compose
