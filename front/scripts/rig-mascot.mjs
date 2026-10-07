@@ -50,6 +50,13 @@ const SCALE = 0.52;
 const TORSO_HALF_WIDTH = 0.25;
 /** The backpack starts behind this depth: never part of the arms. */
 const BACKPACK_FRONT = -0.11;
+/**
+ * Forehead mole, painted into the albedo: image-to-3D generators drop such
+ * small details. `at` is (x, y) in raw model space, seen from the front.
+ */
+const MOLE = { at: [-0.07, 0.665], radius: 0.013, colour: [70, 40, 32] };
+/** Texels each UV island is grown by before downscaling (avoids light seams). */
+const GUTTER = 16;
 /** Fraction of triangles kept by the simplifier (the raw mesh has ~150k). */
 const SIMPLIFY_RATIO = 0.35;
 
@@ -188,6 +195,88 @@ function weightsFor(p, hairColour) {
   return w;
 }
 
+/** Paints MOLE into the raw RGB(A) pixels `px`; returns how many texels it touched. */
+function paintMole(px, info, pos, uv, idx) {
+  const [mx, my] = MOLE.at;
+  const r = MOLE.radius;
+  // depth of the forehead surface at the mole (front-most vertex around it)
+  let mz = -Infinity;
+  for (let i = 0; i < pos.length / 3; i++) {
+    if (Math.hypot(pos[i * 3] - mx, pos[i * 3 + 1] - my) < 0.02) mz = Math.max(mz, pos[i * 3 + 2]);
+  }
+  const { width: W, height: H, channels: C } = info;
+  let count = 0;
+  for (let t = 0; t < idx.length; t += 3) {
+    const v = [idx[t], idx[t + 1], idx[t + 2]];
+    const P = v.map((i) => [pos[i * 3], pos[i * 3 + 1], pos[i * 3 + 2]]);
+    if (P.every((q) => Math.hypot(q[0] - mx, q[1] - my, q[2] - mz) > r * 6)) continue;
+    const U = v.map((i) => [uv[i * 2] * W, uv[i * 2 + 1] * H]);
+    const d = (U[1][1] - U[2][1]) * (U[0][0] - U[2][0]) + (U[2][0] - U[1][0]) * (U[0][1] - U[2][1]);
+    if (Math.abs(d) < 1e-12) continue;
+    const xs = U.map((u) => u[0]), ys = U.map((u) => u[1]);
+    for (let y = Math.max(0, Math.floor(Math.min(...ys))); y <= Math.min(H - 1, Math.ceil(Math.max(...ys))); y++) {
+      for (let x = Math.max(0, Math.floor(Math.min(...xs))); x <= Math.min(W - 1, Math.ceil(Math.max(...xs))); x++) {
+        const a = ((U[1][1] - U[2][1]) * (x + 0.5 - U[2][0]) + (U[2][0] - U[1][0]) * (y + 0.5 - U[2][1])) / d;
+        const b = ((U[2][1] - U[0][1]) * (x + 0.5 - U[2][0]) + (U[0][0] - U[2][0]) * (y + 0.5 - U[2][1])) / d;
+        const c = 1 - a - b;
+        if (a < -0.01 || b < -0.01 || c < -0.01) continue;
+        const q = [0, 1, 2].map((k) => a * P[0][k] + b * P[1][k] + c * P[2][k]);
+        const alpha = 1 - smooth(r * 0.55, r, Math.hypot(q[0] - mx, q[1] - my, q[2] - mz));
+        if (alpha <= 0) continue;
+        const o = (y * W + x) * C;
+        for (let k = 0; k < 3; k++) px[o + k] = Math.round(px[o + k] * (1 - alpha) + MOLE.colour[k] * alpha);
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+/** Texels covered by some triangle in UV space. */
+function uvCoverage(W, H, uv, idx) {
+  const mask = new Uint8Array(W * H);
+  for (let t = 0; t < idx.length; t += 3) {
+    const U = [idx[t], idx[t + 1], idx[t + 2]].map((i) => [uv[i * 2] * W, uv[i * 2 + 1] * H]);
+    const d = (U[1][1] - U[2][1]) * (U[0][0] - U[2][0]) + (U[2][0] - U[1][0]) * (U[0][1] - U[2][1]);
+    if (Math.abs(d) < 1e-12) continue;
+    const xs = U.map((u) => u[0]), ys = U.map((u) => u[1]);
+    for (let y = Math.max(0, Math.floor(Math.min(...ys))); y <= Math.min(H - 1, Math.ceil(Math.max(...ys))); y++) {
+      for (let x = Math.max(0, Math.floor(Math.min(...xs))); x <= Math.min(W - 1, Math.ceil(Math.max(...xs))); x++) {
+        const a = ((U[1][1] - U[2][1]) * (x + 0.5 - U[2][0]) + (U[2][0] - U[1][0]) * (y + 0.5 - U[2][1])) / d;
+        const b = ((U[2][1] - U[0][1]) * (x + 0.5 - U[2][0]) + (U[0][0] - U[2][0]) * (y + 0.5 - U[2][1])) / d;
+        if (a >= -0.02 && b >= -0.02 && 1 - a - b >= -0.02) mask[y * W + x] = 1;
+      }
+    }
+  }
+  return mask;
+}
+
+/** Fills uncovered texels with the average of covered neighbours, GUTTER rings deep. */
+function dilate(px, { width: W, height: H, channels: C }, mask) {
+  for (let step = 0; step < GUTTER; step++) {
+    const grown = [];
+    for (let y = 0; y < H; y++) {
+      for (let x = 0; x < W; x++) {
+        if (mask[y * W + x]) continue;
+        const sum = new Array(C).fill(0);
+        let n = 0;
+        for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+          const X = x + dx, Y = y + dy;
+          if (X < 0 || Y < 0 || X >= W || Y >= H || !mask[Y * W + X]) continue;
+          for (let k = 0; k < C; k++) sum[k] += px[(Y * W + X) * C + k];
+          n++;
+        }
+        if (n) grown.push([y * W + x, sum.map((v) => v / n)]);
+      }
+    }
+    if (!grown.length) break;
+    for (const [i, c] of grown) {
+      for (let k = 0; k < C; k++) px[i * C + k] = Math.round(c[k]);
+      mask[i] = 1;
+    }
+  }
+}
+
 /** Keeps the 4 largest influences, normalised (glTF limit for one JOINTS/WEIGHTS set). */
 function top4(w) {
   const order = [...w.keys()].sort((a, b) => w[b] - w[a]).slice(0, 4);
@@ -222,6 +311,11 @@ const uvAcc = prim.getAttribute("TEXCOORD_0");
 const n = posAcc.getCount();
 const pos = posAcc.getArray();
 const uv = uvAcc.getArray();
+
+// the mole is painted in 3D (texel → surface point), so it stays round even
+// where the forehead is split across several UV islands
+const molePixels = paintMole(px, info, pos, uv, prim.getIndices().getArray());
+albedo.setImage(await sharp(px, { raw: info }).png().toBuffer()).setMimeType("image/png");
 const joints = new Uint8Array(n * 4);
 const weights = new Float32Array(n * 4);
 let hairCount = 0;
@@ -272,6 +366,19 @@ scene.addChild(nodes.hips).addChild(doc.createNode("body").setMesh(meshes[0]).se
 meshes[0].setName("body");
 prim.getMaterial().setName("mascot");
 
+// grow every UV island into the empty space around it: downscaled textures
+// and mipmaps blend across island borders, which shows up as light seams
+const material = prim.getMaterial();
+// The normal map is dropped: without baked tangents it draws light streaks along
+// the UV seams across the face, and on a cartoon character it adds almost nothing.
+material.setNormalTexture(null);
+for (const tex of [material.getBaseColorTexture(), material.getMetallicRoughnessTexture()]) {
+  if (!tex) continue;
+  const { data, info: ti } = await sharp(Buffer.from(tex.getImage())).raw().toBuffer({ resolveWithObject: true });
+  dilate(data, ti, uvCoverage(ti.width, ti.height, uv, prim.getIndices().getArray()));
+  tex.setImage(await sharp(data, { raw: ti }).png().toBuffer()).setMimeType("image/png");
+}
+
 await doc.transform(
   textureCompress({ encoder: sharp, targetFormat: "webp", resize: [1024, 1024] }),
   quantize(),
@@ -280,7 +387,7 @@ await doc.transform(
 );
 await io.write(output, doc);
 
-console.log(`${n} vertices (${hairCount} hair), ${BONE_NAMES.length} bones → ${path.relative(root, output)}`);
+console.log(`${n} vertices (${hairCount} hair), ${BONE_NAMES.length} bones, mole ${molePixels} texels → ${path.relative(root, output)}`);
 console.log(
   "world joints:",
   Object.fromEntries(Object.keys(JOINTS).map((k) => [k, toWorld(JOINTS[k]).toArray().map((v) => +v.toFixed(3))])),
