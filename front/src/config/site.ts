@@ -1,6 +1,5 @@
 /**
  * Global site configuration — personal data, links and external endpoints.
- * ⚠️ Values marked TODO must be replaced before launch.
  */
 export const siteConfig = {
   name: "Laura Rodrigo Hernando",

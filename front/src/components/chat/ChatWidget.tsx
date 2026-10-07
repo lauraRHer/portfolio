@@ -2,9 +2,10 @@
 
 import { AnimatePresence } from "motion/react";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Mascot } from "@/components/mascot/Mascot";
 import { usePastHero } from "@/lib/hooks/usePastHero";
+import { checkHealth } from "@/lib/chat/api";
 import { useWebGLSupport } from "@/lib/hooks/useWebGLSupport";
 import { ChatPanel } from "./ChatPanel";
 
@@ -20,6 +21,12 @@ export function ChatWidget() {
   const webgl = useWebGLSupport();
   const [open, setOpen] = useState(false);
   const MascotImpl = webgl ? Mascot3D : Mascot;
+
+  // Wake the API on page load: a free host that sleeps when idle takes about a
+  // minute to start, better spent while the visitor scrolls than after a question.
+  useEffect(() => {
+    void checkHealth();
+  }, []);
 
   return (
     <>
