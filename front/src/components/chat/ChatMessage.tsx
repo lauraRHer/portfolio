@@ -1,12 +1,14 @@
 "use client";
 
+import { Mail } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { siteConfig } from "@/config/site";
 import { sections } from "@/content/sections";
 import type { UiMessage } from "@/lib/chat/useChat";
 import { cn } from "@/lib/utils";
-import { CopyEmailButton } from "../ui/CopyEmailButton";
+import { LinkedinIcon } from "../ui/BrandIcons";
 
 const sectionKey = Object.fromEntries(sections.map((s) => [s.id, s.key])) as Record<string, (typeof sections)[number]["key"]>;
 
@@ -23,13 +25,15 @@ export function ChatMessage({ message: m, onRetry, onSuggestion, suggestions }: 
   const tNav = useTranslations("nav");
   const isUser = m.role === "user";
 
+  if (m.notice === "contact") return <ContactNudge />;
+
   if (m.error) {
     return (
       <div className="max-w-[90%] rounded-2xl border-l-2 border-danger bg-danger/5 px-4 py-3 text-sm text-ink-soft">
         <p>{m.error === "rate_limited" ? t("rateLimit") : t("error")}</p>
-        <div className="mt-2 flex gap-4">
+        <div className="mt-2 flex flex-wrap items-center gap-4">
           <button type="button" onClick={onRetry} className="text-cyan hover:underline">{t("retry")}</button>
-          <CopyEmailButton label={t("copyEmail")} copiedLabel={t("copied")} className="text-ink-soft hover:text-ink" />
+          <EmailLink />
         </div>
       </div>
     );
@@ -91,6 +95,39 @@ export function ChatMessage({ message: m, onRetry, onSuggestion, suggestions }: 
             ))}
           </div>
         )}
+      </div>
+    </div>
+  );
+}
+
+const pill = "inline-flex items-center gap-1.5 rounded-full border border-cyan/30 px-3 py-1.5 text-xs text-cyan transition-colors hover:bg-cyan/10";
+
+/** Opens the visitor's mail app addressed to Laura (errors, offline notice, contact nudge). */
+export function EmailLink() {
+  const t = useTranslations("chat");
+  return (
+    <a href={`mailto:${siteConfig.email}`} className={pill}>
+      <Mail className="size-3.5" aria-hidden />
+      {t("writeEmail")}
+    </a>
+  );
+}
+
+/** Shown once after many questions: invites the visitor to talk to Laura directly. */
+function ContactNudge() {
+  const t = useTranslations("chat");
+  return (
+    <div className="flex justify-start">
+      <div className="glass max-w-[88%] rounded-2xl rounded-bl-md px-4 py-2.5 text-sm leading-relaxed text-ink-soft">
+        <span className="sr-only">{t("assistant")}: </span>
+        <p>{t("nudge")}</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <EmailLink />
+          <a href={siteConfig.socials.linkedin} target="_blank" rel="noopener noreferrer" className={pill}>
+            <LinkedinIcon className="size-3.5" />
+            {t("nudgeLinkedin")}
+          </a>
+        </div>
       </div>
     </div>
   );

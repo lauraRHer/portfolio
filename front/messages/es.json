@@ -242,13 +242,14 @@
     "rateLimit": "Demasiadas preguntas seguidas. Espera un momento.",
     "offline": "El asistente no está disponible ahora mismo. Puedes escribir a Laura directamente.",
     "retry": "Reintentar",
-    "copyEmail": "Copiar email",
-    "copied": "Copiado ✓",
     "sources": "Fuentes",
     "newMessages": "↓ Nuevos mensajes",
     "you": "Tú",
     "assistant": "Asistente",
-    "slow": "Sigo pensando… (puede tardar un poco)"
+    "slow": "Sigo pensando… (puede tardar un poco)",
+    "nudge": "Parece que tienes bastantes dudas 😊 ¿Por qué no contactas con Laura directamente? Le encantará hablar contigo.",
+    "nudgeLinkedin": "LinkedIn",
+    "writeEmail": "Escribirle un email"
   },
   "mascot": {
     "hello": "¡Hola! ¿Te puedo ayudar?",

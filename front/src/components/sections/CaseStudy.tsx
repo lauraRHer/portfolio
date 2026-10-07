@@ -38,7 +38,7 @@ export function CaseStudy() {
   ];
 
   return (
-    <Section id="case-study" className="overflow-hidden">
+    <Section id="case-study" className="overflow-clip">
       <BackgroundBeams className="opacity-60" />
       <div className="relative">
         <div className="mb-6 flex flex-wrap gap-2">

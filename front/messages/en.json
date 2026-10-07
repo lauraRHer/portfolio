@@ -242,13 +242,14 @@
     "rateLimit": "Too many questions in a row — give it a moment.",
     "offline": "The assistant isn't available right now. You can email Laura directly.",
     "retry": "Retry",
-    "copyEmail": "Copy email",
-    "copied": "Copied ✓",
     "sources": "Sources",
     "newMessages": "↓ New messages",
     "you": "You",
     "assistant": "Assistant",
-    "slow": "Still thinking… (this can take a moment)"
+    "slow": "Still thinking… (this can take a moment)",
+    "nudge": "Looks like you have quite a few questions 😊 Why not get in touch with Laura directly? She'd love to hear from you.",
+    "nudgeLinkedin": "LinkedIn",
+    "writeEmail": "Send her an email"
   },
   "mascot": {
     "hello": "Hi! Can I help you?",

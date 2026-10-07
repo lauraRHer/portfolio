@@ -9,6 +9,8 @@ export type UiMessage = ChatTurn & {
   meta?: ChatMeta;
   streaming?: boolean;
   error?: "rate_limited" | "generic";
+  /** Bubble added by the front (not a model answer, never sent as history). */
+  notice?: "contact";
 };
 
 export type ChatStatus = "idle" | "streaming";
@@ -16,8 +18,13 @@ export type ChatStatus = "idle" | "streaming";
 const STORAGE_KEY = "lrh:chat";
 /** How many previous turns we send for conversational context. */
 const HISTORY_TURNS = 6;
+/** After this many questions, suggest talking to Laura directly (once per conversation). */
+const CONTACT_NUDGE_AFTER = 10;
 
 const uid = () => Math.random().toString(36).slice(2, 10);
+
+const needsContactNudge = (messages: UiMessage[]) =>
+  messages.filter((m) => m.role === "user").length >= CONTACT_NUDGE_AFTER && !messages.some((m) => m.notice === "contact");
 
 /**
  * Chat state machine: optimistic user bubble → empty assistant bubble that
@@ -58,7 +65,7 @@ export function useChat(locale: string) {
       if (!message || status === "streaming") return;
 
       const history: ChatTurn[] = base
-        .filter((m) => !m.error && m.content)
+        .filter((m) => !m.error && !m.notice && m.content)
         .slice(-HISTORY_TURNS)
         .map(({ role, content }) => ({ role, content }));
 
@@ -82,6 +89,7 @@ export function useChat(locale: string) {
           },
         );
         patchLast((m) => ({ ...m, streaming: false }));
+        setMessages((prev) => (needsContactNudge(prev) ? [...prev, { id: uid(), role: "assistant", content: "", notice: "contact" }] : prev));
       } catch (e) {
         if ((e as Error).name === "AbortError") {
           patchLast((m) => ({ ...m, streaming: false }));

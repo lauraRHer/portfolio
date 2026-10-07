@@ -9,8 +9,7 @@ import { useChat } from "@/lib/chat/useChat";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
-import { CopyEmailButton } from "../ui/CopyEmailButton";
-import { ChatMessage } from "./ChatMessage";
+import { ChatMessage, EmailLink } from "./ChatMessage";
 
 const MAX_CHARS = 500;
 
@@ -194,7 +193,9 @@ function OfflineNotice() {
   return (
     <div className="rounded-xl border-l-2 border-danger bg-danger/5 p-3 text-sm text-ink-soft">
       <p>{t("offline")}</p>
-      <CopyEmailButton label={t("copyEmail")} copiedLabel={t("copied")} className="mt-2 text-cyan" />
+      <div className="mt-2">
+        <EmailLink />
+      </div>
     </div>
   );
 }
