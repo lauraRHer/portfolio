@@ -51,6 +51,8 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
   const [layers] = useState(createLayers);
   const [bubble, setBubble] = useState<string | null>(null);
   const [pose, setPose] = useState<"offstage" | "standing" | "seated">("offstage");
+  // true while she drops below the edge: the frame loop must keep running until she is out of view
+  const [sinking, setSinking] = useState(false);
   const [ctl] = useState(() => ({ busy: false, hovering: false }));
 
   // ---------------------------------------------------------------- director
@@ -83,6 +85,9 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
       rig.set({ rootY: OFFSTAGE }, 0.8);
       setBubble(null);
       setPose("offstage");
+      setSinking(true);
+      for (let i = 0; i < 40 && rig.get("rootY") > OFFSTAGE + 0.05; i++) await wait(100);
+      setSinking(false);
     };
 
     const stayStill = async () => {
@@ -293,7 +298,7 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
         className="absolute bottom-0 right-0 h-[85%] w-[70%] cursor-pointer rounded-t-3xl focus-visible:outline-offset-[-4px]"
       />
       <div className="pointer-events-none absolute inset-0">
-        <Stage rig={rig} layers={layers} widthPx={widthPx} heightPx={heightPx} zoom={zoom} running={active || pose !== "offstage"} />
+        <Stage rig={rig} layers={layers} widthPx={widthPx} heightPx={heightPx} zoom={zoom} running={active || pose !== "offstage" || sinking} />
       </div>
     </div>
   );
