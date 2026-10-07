@@ -7,7 +7,7 @@ import { SpeechBubble } from "@/components/mascot/SpeechBubble";
 import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { useMotionPreference } from "@/providers/MotionPreferenceProvider";
-import { createLayers, createRig } from "./rigState";
+import { WAVE_ARM, createLayers, createRig } from "./rigState";
 
 // three.js scene in its own lazy chunk
 const Stage = dynamic(() => import("./Stage"), { ssr: false });
@@ -130,15 +130,15 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
       // ---- 5. phew: wipes her forehead
       await wait(350);
       setBubble(t("phew"));
-      rig.set({ shRz: 2.5, elRz: 1.6, headRz: -0.1 }, 1);
+      rig.set({ shRz: 1.5, elRz: 2.3, headRz: -0.1 }, 1);
       await wait(450);
-      rig.set({ shRz: 2.1, elRz: 1.9 }, 1.4);
+      rig.set({ shRz: 1.35, elRz: 2.4 }, 1.4);
       await wait(400);
       setBubble(null);
       rig.set({ shRz: 0.15, elRz: -0.12, headRz: 0 });
       // ---- 6. looks at you and waves
       lookAtViewer(false);
-      rig.set({ headRz: 0.1, shRz: 2.55, elRz: 0.25 }, 1.2);
+      rig.set({ headRz: 0.1, ...WAVE_ARM }, 1.2);
       layers.wave = true;
       await say(t("hello"), 1700);
       layers.wave = false;
@@ -200,7 +200,7 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
           lookAtViewer(true);
           await wait(1700);
         } else if (a < 0.7) {
-          rig.set({ shLz: -2.6, shRz: 2.6, shLx: 0, shRx: 0, elLz: -0.5, elRz: 0.5, spineRx: -0.15, headRx: -0.15 }, 0.7);
+          rig.set({ shLz: -1.45, shRz: 1.45, shLx: 0, shRx: 0, elLz: -1.3, elRz: 1.3, spineRx: -0.15, headRx: -0.15 }, 0.7);
           await wait(1400);
           rig.impulse("sway", 6);
         } else {
@@ -243,7 +243,7 @@ export default function Mascot3D({ active, chatOpen, onOpen }: Props) {
     ctl.hovering = true;
     if (ctl.busy || pose !== "seated") return;
     layers.typing = false;
-    rig.set({ headRx: 0, headRy: 0.55, shRx: 0, shRz: 2.4, elRx: 0, elRz: 0.3 });
+    rig.set({ headRx: 0, headRy: 0.55, shRx: 0, elRx: 0, ...WAVE_ARM });
     layers.wave = !reduced;
     layers.talk = !reduced;
     setBubble(t("hover"));

@@ -47,7 +47,16 @@ const SCALE = 0.52;
  * Torso half-width: closer to the axis it's suit, not sleeve. The lowered arms
  * touch the hips, so without this the forearm would drag the suit along.
  */
-const TORSO_HALF_WIDTH = 0.25;
+const TORSO_HALF_WIDTH = 0.245;
+/** Width of the torso → sleeve hand-over: narrow, so only the contact strip stretches. */
+const SEAM_BLEND = 0.015;
+/**
+ * Above the armpit the sleeve wraps the shoulder, which is closer to the axis:
+ * the arm may claim vertices from here outwards, so it lifts from the shoulder
+ * instead of from the middle of the ribs.
+ */
+const ARMPIT_Y = 0;
+const SHOULDER_INNER = 0.16;
 /** The backpack starts behind this depth: never part of the arms. */
 const BACKPACK_FRONT = -0.11;
 /**
@@ -65,7 +74,7 @@ const JOINTS = {
   spine: [0, -0.2, 0.08],
   head: [0, 0.22, 0.08],
   hair: [0, 0.32, -0.08],
-  shL: [-0.22, 0.07, 0.09],
+  shL: [-0.19, 0.11, 0.09], // centre of the shoulder joint, not the sleeve seam
   elL: [-0.31, -0.09, 0.12],
   handL: [-0.42, -0.27, 0.165], // glove centre (end of the chain, not a bone)
   tipL: [-0.5, -0.36, 0.17], // glove fingertips
@@ -153,10 +162,12 @@ function weightsFor(p, hairColour) {
     const upper = len(sub(el, sh));
     const radius = u > upper ? 0.13 : 0.1; // the mittens are chunkier than the sleeves
     const mitten = len(sub(p, JOINTS[`hand${s}`])) < 0.15; // incl. the thumb pointing inwards
-    if (z > BACKPACK_FRONT && (d < radius || mitten) && u > -0.03 && side > TORSO_HALF_WIDTH) {
-      // where the sleeve is fused with the suit (hips), hand over to the torso
-      // gradually so the joining triangles stretch smoothly instead of tearing
-      const body = Math.max(1 - smooth(-0.03, 0.05, u), 1 - smooth(TORSO_HALF_WIDTH, TORSO_HALF_WIDTH + 0.05, side));
+    // inner limit of the sleeve: the shoulder above the armpit, the torso side below it
+    const inner = TORSO_HALF_WIDTH + (SHOULDER_INNER - TORSO_HALF_WIDTH) * smooth(ARMPIT_Y - 0.06, ARMPIT_Y, y);
+    if (z > BACKPACK_FRONT && (d < radius || mitten) && u > -0.03 && side > inner) {
+      // where the sleeve is fused with the suit, hand over to the torso gradually
+      // so the joining triangles stretch smoothly instead of tearing
+      const body = Math.max(1 - smooth(-0.03, 0.05, u), 1 - smooth(inner, inner + SEAM_BLEND, side));
       const fore = smooth(upper - 0.04, upper + 0.04, u);
       w[B.spine] = body;
       w[B[`el${s}`]] = (1 - body) * fore;

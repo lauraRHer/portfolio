@@ -60,3 +60,10 @@ export const createLayers = (): Layers => ({
   typing: false,
   talk: false,
 });
+
+/**
+ * Waving arm: upper arm at shoulder height, forearm up. The generated mesh has
+ * the arms fused with the suit down the sides, so raising them straight up
+ * stretches that shared surface; above shoulder height it shows.
+ */
+export const WAVE_ARM = { shRz: 1.35, elRz: 1.45 };

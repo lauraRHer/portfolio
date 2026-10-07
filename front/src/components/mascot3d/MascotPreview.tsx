@@ -4,11 +4,11 @@ import { Environment, Lightformer, OrbitControls } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import { Suspense, useState } from "react";
 import { AstronautGLB } from "./AstronautGLB";
-import { createLayers, createRig } from "./rigState";
+import { WAVE_ARM, createLayers, createRig } from "./rigState";
 
 const POSES = {
   stand: { rootX: 0, rootY: 0, rootRy: 0, hipLx: 0, hipRx: 0, kneeLx: 0, kneeRx: 0, shLx: 0, shRx: 0, shLz: -0.15, shRz: 0.15, elLx: 0, elRx: 0, elLz: 0.12, elRz: -0.12, laptop: 0, headRx: 0, headRy: 0 },
-  wave: { shRz: 2.55, elRz: 0.25 },
+  wave: WAVE_ARM,
   seated: { rootX: 0, rootY: -0.28, rootRy: -0.62, hipLx: -1.5, hipRx: -1.5, kneeLx: 1.45, kneeRx: 1.4, shLx: -1.05, shRx: -1.05, shLz: -0.08, shRz: 0.08, elLx: -0.35, elRx: -0.35, elLz: 0.1, elRz: -0.1, laptop: 1, headRx: 0.3, headRy: 0.05 },
 } as const;
 

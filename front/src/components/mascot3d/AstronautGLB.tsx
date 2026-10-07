@@ -28,8 +28,8 @@ export const MASCOT_URL = "/models/mascot.glb";
 
 // ---------------------------------------------------------------- measurements (match the rig script output)
 /** Shoulder pivots relative to the root. */
-const SHOULDER = { x: 0.114, y: 0.531 };
-const UPPER_ARM = 0.097;
+const SHOULDER = { x: 0.099, y: 0.552 };
+const UPPER_ARM = 0.122;
 /** Elbow → glove centre. */
 const FOREARM = 0.112;
 /** Where the gloves grip the screen edge while climbing (x offset from the body). */
