@@ -6,6 +6,12 @@
 | Front | **Vercel** (o cualquier hosting Node / contenedor) | Variables: `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_API_URL` |
 | Back | **Railway / Fly.io / Render / VPS** con Docker | Modelos alojados: un VPS sin GPU es demasiado lento para LLMs locales. Con planes gratuitos, usa una [cadena de fallback](cambiar-proveedor-llm.md#producción-con-modelos-gratuitos-cadena-de-fallback) (`LLM_CHAIN`) |
 
+## Back en Render
+[`render.yaml`](../../render.yaml) describe el servicio (plan gratuito, Frankfurt, Dockerfile de `back/`, cadena de modelos gratuitos). En Render: *New → Blueprint* sobre el repositorio; pide los valores marcados con `sync: false` (las claves y `CORS_ORIGINS`), que no se guardan en el repo.
+
+- El plan gratuito se duerme tras 15 minutos sin tráfico y tarda alrededor de un minuto en despertar. La web llama a `/api/health` al cargar para que ese arranque ocurra mientras el visitante navega.
+- No necesita disco: al arrancar, el back vuelve a indexar `knowledge/` (unos segundos con Gemini).
+
 ## Back con Docker
 ```bash
 cd back

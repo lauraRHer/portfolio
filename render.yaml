@@ -1,0 +1,47 @@
+# Render Blueprint for the API (https://render.com/docs/blueprint-spec).
+# Values with `sync: false` are secrets or deployment-specific: Render asks for
+# them when the Blueprint is created and never reads them from this file.
+services:
+  - type: web
+    name: portfolio-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./back/Dockerfile
+    dockerContext: ./back
+    buildFilter:
+      paths:
+        - back/**
+    healthCheckPath: /api/health
+    envVars:
+      # Render passes environment variables to `docker build` as build args.
+      - key: UV_EXTRAS
+        value: --extra openai
+      - key: PORT
+        value: "8000"
+      # Only reachable through Render's proxy: trust its X-Forwarded-For.
+      - key: FORWARDED_ALLOW_IPS
+        value: "*"
+      - key: LLM_CHAIN
+        value: groq:openai/gpt-oss-120b?reasoning_effort=low, groq:qwen/qwen3.8-27b, gemini:gemini-3.5-flash-lite, openrouter:nvidia/nemotron-3-super-120b-a12b:free
+      - key: CLASSIFIER_CHAIN
+        value: groq:qwen/qwen3.8-27b, gemini:gemini-3.5-flash-lite
+      - key: EMBEDDING_PROVIDER
+        value: gemini
+      - key: EMBEDDING_MODEL
+        value: gemini-embedding-001
+      - key: EMBEDDING_DIMENSIONS
+        value: "768"
+      - key: MAX_CONCURRENT_CHATS
+        value: "6"
+      - key: LLM_TIMEOUT_SECONDS
+        value: "45"
+      # JSON list with the site's origin, e.g. ["https://my-site.vercel.app"]
+      - key: CORS_ORIGINS
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
