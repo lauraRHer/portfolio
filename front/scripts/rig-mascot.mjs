@@ -54,7 +54,7 @@ const BACKPACK_FRONT = -0.11;
  * Forehead mole, painted into the albedo: image-to-3D generators drop such
  * small details. `at` is (x, y) in raw model space, seen from the front.
  */
-const MOLE = { at: [0.074, 0.645], radius: 0.0055, colour: [56, 33, 26] };
+const MOLE = { at: [-0.065, 0.645], radius: 0.0062, colour: [56, 33, 26] };
 /** Texels each UV island is grown by before downscaling (avoids light seams). */
 const GUTTER = 16;
 /** Fraction of triangles kept by the simplifier (the raw mesh has ~150k). */
