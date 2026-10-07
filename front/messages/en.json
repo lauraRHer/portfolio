@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Laura Rodrigo Hernando — Full-Stack Developer · Angular · FastAPI · Applied AI",
-    "description": "Laura Rodrigo Hernando, full-stack developer (Angular, Python/FastAPI, PostgreSQL/PostGIS) specialised in data visualisation applications and applied AI: RAG and local models. Available remotely.",
+    "title": "Laura Rodrigo Hernando — Full-Stack Developer · Angular · FastAPI · AI Engineer",
+    "description": "Laura Rodrigo Hernando, full-stack developer (Angular, Python/FastAPI, PostgreSQL/PostGIS) specialised in data visualisation applications and AI engineering: RAG and local models. Available remotely.",
     "ogTitle": "Laura Rodrigo · Explore a new universe"
   },
   "nav": {
@@ -50,7 +50,7 @@
       "baseLabel": "Based in",
       "base": "Valladolid, Spain",
       "focusLabel": "Focus",
-      "focus": "Full-stack → Applied AI",
+      "focus": "Full-stack → AI Engineer",
       "stackLabel": "Stack",
       "stack": "Angular · FastAPI · PostgreSQL · AI"
     },

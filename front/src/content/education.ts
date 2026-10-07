@@ -5,8 +5,7 @@ export const credentials: Credential[] = [
   {
     id: "upm-genai",
     kind: "certification",
-    title: "Fundamentos y herramientas para la IA generativa",
-    translation: { en: "Fundamentals and tools for generative AI" },
+    title: { es: "Fundamentos y herramientas para la IA generativa", en: "Fundamentals and tools for generative AI" },
     issuer: "Universidad Politécnica de Madrid",
     year: "2026",
     description: {
@@ -17,8 +16,7 @@ export const credentials: Credential[] = [
   {
     id: "uva-ml-dl",
     kind: "certification",
-    title: "Machine Learning y Deep Learning",
-    translation: { en: "Machine Learning and Deep Learning" },
+    title: { es: "Machine Learning y Deep Learning", en: "Machine Learning and Deep Learning" },
     issuer: "Universidad de Valladolid",
     year: "2025",
     description: {
@@ -29,8 +27,7 @@ export const credentials: Credential[] = [
   {
     id: "udemy-fastapi",
     kind: "certification",
-    title: "Aprende FastAPI desde cero",
-    translation: { en: "Learn FastAPI from scratch" },
+    title: { es: "Aprende FastAPI desde cero", en: "Learn FastAPI from scratch" },
     issuer: "Udemy",
     year: "2025",
     description: {
@@ -41,8 +38,7 @@ export const credentials: Credential[] = [
   {
     id: "fp-daw",
     kind: "degree",
-    title: "Técnico Superior en Desarrollo de Aplicaciones Web",
-    translation: { en: "Higher Vocational Diploma in Web Application Development" },
+    title: { es: "Técnico Superior en Desarrollo de Aplicaciones Web", en: "Higher Vocational Diploma in Web Application Development" },
     issuer: "IES Galileo, Valladolid",
     year: "2021 – 2023",
     description: {

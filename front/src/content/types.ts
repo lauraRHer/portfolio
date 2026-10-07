@@ -68,9 +68,7 @@ export interface Service {
 
 export interface Credential {
   id: string;
-  title: string;
-  /** Optional translation shown next to the original title. */
-  translation?: Partial<I18n>;
+  title: I18n;
   issuer: string;
   year: string;
   description: I18n;

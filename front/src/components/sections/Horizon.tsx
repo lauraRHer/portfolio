@@ -28,16 +28,12 @@ export function Horizon() {
           <motion.ul variants={stagger()} initial="hidden" whileInView="visible" viewport={viewportOnce} className="space-y-4">
             {credentials.map((c) => {
               const Icon = c.kind === "degree" ? GraduationCap : Award;
-              const translation = c.translation?.[locale];
               return (
                 <motion.li key={c.id} variants={revealUp}>
                   <CardSpotlight className="flex gap-4 p-5">
                     <Icon className="mt-1 size-5 shrink-0 text-violet-soft" aria-hidden />
                     <div>
-                      <p className="font-semibold leading-snug">
-                        {c.title}
-                        {translation && <span className="font-normal text-ink-muted"> ({translation})</span>}
-                      </p>
+                      <p className="font-semibold leading-snug">{c.title[locale]}</p>
                       <p className="mt-1 text-sm text-ink-soft">{c.issuer} · {c.year}</p>
                       <p className="mt-2 text-sm text-ink-muted">{c.description[locale]}</p>
                       {c.credentialUrl && (
