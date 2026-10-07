@@ -10,7 +10,7 @@ export const siteConfig = {
   // `||` (not `??`): an empty variable copied from .env.example falls back too
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   socials: {
-    linkedin: "https://www.linkedin.com/in/laura-rodrigo-hernando-77b736226",
+    linkedin: "https://www.linkedin.com/in/laura-rodrigo-hernando",
     github: "https://github.com/lauraRHer",
   },
   /** CV per locale (generated from cv/cv.json with `python3 cv/build.py --publish`). */
