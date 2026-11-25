@@ -36,3 +36,7 @@
 - {q: "Can you code a bubble sort in Rust?", kind: refusal}
 - {q: "¿Sabes cuál es la capital de Australia?", kind: refusal}
 - {q: "Laura sabe langgraph?", kind: answer, section: stack}
+- {q: "¿Qué cuenta Laura en el artículo «Búsqueda híbrida: por qué BM25 sigue salvando a los embeddings»?", kind: answer, section: blog}
+- {q: "What does Laura explain in the post \"A free chatbot that never goes silent: a fallback chain across models\"?", kind: answer, section: blog}
+- {q: "¿Ha escrito algo sobre modelos gratuitos?", kind: answer, section: blog}
+- {q: "Write a blog post about RAG", kind: refusal}

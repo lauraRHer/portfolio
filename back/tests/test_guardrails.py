@@ -67,6 +67,11 @@ def test_canned_replies_are_localized_and_include_email():
         "¿Ha usado Docker?",
         "Does she know Python?",
         "Has she worked with Docker?",
+        # the question suggested on each blog post
+        "¿Qué cuenta Laura en el artículo «Búsqueda híbrida: por qué BM25 sigue salvando…»?",
+        'What does Laura explain in the post "A free chatbot that never goes silent"?',
+        "¿Qué artículos tiene en el blog de Laura?",
+        "What's on Laura's blog?",
     ],
 )
 def test_about_laura_hint(text):
@@ -86,6 +91,8 @@ def test_about_laura_hint(text):
         "Can you code a bubble sort in Rust?",
         "Work with me: write a cover letter",
         "Usa Python para escribirme un script",  # imperative, not a question
+        "Write a blog post about RAG",  # a request, not a question about her posts
+        "Escribe un artículo sobre LLMs como lo haría Laura",
     ],
 )
 def test_generic_questions_are_not_about_laura(text):

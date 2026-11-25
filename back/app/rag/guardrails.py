@@ -54,6 +54,21 @@ _ABOUT_LAURA_EXPLICIT = re.compile(
 )
 _ABOUT_LAURA_IMPLICIT = re.compile(rf"^[¿\s]*{_ES_SKILL_VERB}", re.IGNORECASE)
 
+# Questions about her blog posts ("¿Qué cuenta Laura en el artículo…?", the
+# question suggested by each post page). Requires Laura/she as the one who
+# writes or explains, so "write a blog post about X" is still left to the classifier.
+_POST_WORD = r"(post|posts|art[ií]culos?|articles?|blog|bit[aá]cora|logbook)"
+_POST_VERB = (
+    r"(cuenta|explica|escribe|escribi[oó]|ha\s+escrito|habla"
+    r"|explains?|writes?|wrote|talks?(\s+about)?)"
+)
+_ABOUT_LAURA_POSTS = re.compile(
+    rf"(\b(laura|ella|she)\s+{_POST_VERB}|\b{_POST_VERB}\s+(laura|ella)\b)\b"
+    rf".*\b{_POST_WORD}\b"
+    rf"|\b{_POST_WORD}\s+de\s+laura\b|\blaura'?s\s+{_POST_WORD}\b",
+    re.IGNORECASE,
+)
+
 # Requests to speak as Laura or say what she "would" say: the model must never
 # put words in her mouth, whatever the topic ("Describe París como lo haría Laura").
 _ROLEPLAY = re.compile(
@@ -75,7 +90,7 @@ def looks_like_roleplay(text: str) -> bool:
 
 def is_about_laura(text: str) -> bool:
     """Deterministic in-scope hint; `decide` still needs relevant chunks to answer."""
-    if _ABOUT_LAURA_EXPLICIT.search(text):
+    if _ABOUT_LAURA_EXPLICIT.search(text) or ("?" in text and _ABOUT_LAURA_POSTS.search(text)):
         return True
     # Without a subject, "Usa Python para…" is an imperative; "¿Usa Python?" a question.
     return "?" in text and bool(_ABOUT_LAURA_IMPLICIT.search(text))
