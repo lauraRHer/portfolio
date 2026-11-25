@@ -103,6 +103,14 @@ El lanzador del chat es un personaje animado que aparece al salir del hero. Por 
 
 ---
 
+### Blog (`content/blog/`, `lib/blog/`, `components/blog/`)
+- Rutas: `/[locale]/blog` (mapa + lista), `/[locale]/blog/[slug]` (artículo, imagen Open Graph propia) y `/[locale]/blog/rss.xml`. Todo se prerenderiza; un slug desconocido es un 404.
+- `lib/blog/posts.ts` (solo servidor) lee y valida los Markdown y descarta `assistantSummary` antes de que nada llegue a un componente ([ADR 0008](adr/0008-blog-markdown-resumen-privado.md)).
+- `lib/blog/starmap.ts` coloca las estrellas: espiral en ángulo áureo alrededor de cada constelación, en orden de publicación, para que un artículo nuevo no mueva los anteriores. El tamaño indica el tiempo de lectura y el brillo, la antigüedad.
+- En la home, `sections/Blog.tsx` es la órbita 08: un trozo del mapa enlazado con los tres últimos artículos. Si no hay artículos publicados, la sección y su entrada del menú no se muestran.
+- La navbar, el menú móvil, el pie y los chips de fuentes del chat usan `useSectionHref`, que en las páginas del blog convierte `#seccion` en `/<idioma>#seccion`.
+- El botón «Pregunta al asistente» abre el chat con una pregunta sugerida mediante un evento de `window` (`lib/chat/events.ts`).
+
 ## Backend
 
 ### Hexagonal: puertos y adaptadores

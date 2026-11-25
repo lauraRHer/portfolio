@@ -18,6 +18,7 @@ Soy desarrolladora full-stack (Angular, Python/FastAPI, PostgreSQL/PostGIS) y me
 - **En producción, solo modelos gratuitos.** Una cadena de fallback recorre modelos de varios proveedores (Groq, Gemini, OpenRouter). Cuando uno agota su cuota diaria, llega a su límite por minuto o falla, el siguiente responde, y el que ha fallado queda apartado el tiempo que corresponde a cada causa ([ADR 0006](docs/adr/0006-cadena-fallback-modelos-gratuitos.md)).
 - **Endurecido tras una auditoría de QA hecha con un agente de IA** ([cómo](#cómo-lo-he-construido)). El historial falsificado se ignora, los intentos de inyección y de hacerse pasar por mí se rechazan, las generaciones simultáneas están limitadas, las llamadas al modelo tienen tiempo máximo y cada fallo encontrado se convirtió en un test de regresión.
 - **Mascota animada.** Un modelo 3D generado con IA que riggeo por script (esqueleto y pesos calculados a partir de la malla) y animo de forma procedural con muelles e IK de dos huesos: trepa a la página, saluda y se sienta con el portátil.
+- **Un blog que es un mapa estelar.** Cada artículo es una estrella y cada tema, una constelación, siempre con una lista normal al lado. Los artículos son Markdown bilingüe en el repo, y el asistente recibe de cada uno un resumen privado que nunca se muestra en la web ([ADR 0008](docs/adr/0008-blog-markdown-resumen-privado.md)).
 - **Una única fuente de verdad para el contenido.** Ficheros tipados y bilingües alimentan la web, y el CV (PDF en ES/EN) se genera desde un único JSON.
 
 ## Cómo lo he construido
@@ -78,6 +79,7 @@ Ollama se queda en el host; en la [guía de despliegue](docs/guides/despliegue.m
 | front | `npm run dev` · `npm run build` · `npm run lint` | desarrollo · build de producción · lint |
 | front | `npx tsc --noEmit` | comprobación de tipos |
 | front | `npm run rig:mascot` | regenera el modelo riggeado de la mascota |
+| front | `npm run blog:knowledge` | exporta los resúmenes del blog a la base de conocimiento del asistente |
 | back | `uv run pytest` | tests (no necesitan Ollama) |
 | back | `uv run ruff check . && uv run ruff format .` | lint + formato |
 | back | `uv run python -m app.rag.ingest --reset` | reconstruye el índice de conocimiento |
@@ -90,7 +92,8 @@ Ollama se queda en el host; en la [guía de despliegue](docs/guides/despliegue.m
 portfolio/
 ├── front/                     Next.js
 │   ├── messages/{es,en}.json  textos de la interfaz
-│   ├── scripts/               script de rigging de la mascota
+│   ├── content/blog/          artículos de la bitácora (Markdown, ES/EN)
+│   ├── scripts/               rigging de la mascota, exportación del blog al asistente
 │   └── src/
 │       ├── app/[locale]/      layout, página, imagen Open Graph
 │       ├── components/
@@ -121,7 +124,7 @@ portfolio/
 - [API](docs/API.md): contrato HTTP/SSE del asistente
 - [Retos técnicos](docs/RETOS.md): problemas que me encontré y cómo los resolví
 - [Decisiones de arquitectura (ADR)](docs/adr/)
-- Guías: [añadir un proyecto](docs/guides/anadir-un-proyecto.md) · [el asistente RAG](docs/guides/chatbot-rag.md) · [proveedores de LLM](docs/guides/cambiar-proveedor-llm.md) · [la mascota 3D](docs/guides/mascota-3d.md) · [despliegue](docs/guides/despliegue.md)
+- Guías: [añadir un proyecto](docs/guides/anadir-un-proyecto.md) · [añadir un artículo](docs/guides/anadir-un-articulo.md) · [el asistente RAG](docs/guides/chatbot-rag.md) · [proveedores de LLM](docs/guides/cambiar-proveedor-llm.md) · [la mascota 3D](docs/guides/mascota-3d.md) · [despliegue](docs/guides/despliegue.md)
 
 ## Licencia
 

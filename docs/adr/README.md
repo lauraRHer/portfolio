@@ -11,3 +11,4 @@ Decisiones de arquitectura relevantes, con contexto y consecuencias. Formato bre
 | [0005](0005-busqueda-hibrida.md) | Búsqueda híbrida (vectores + BM25) y router LLM |
 | [0006](0006-cadena-fallback-modelos-gratuitos.md) | Cadena de fallback de modelos gratuitos en producción |
 | [0007](0007-embeddings-gemini-con-bm25.md) | Embeddings de Gemini con BM25 de respaldo |
+| [0008](0008-blog-markdown-resumen-privado.md) | Blog en Markdown con un resumen privado para el asistente |
