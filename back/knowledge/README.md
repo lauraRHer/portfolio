@@ -6,4 +6,5 @@
 - Frontmatter obligatorio: `title` y `section` (id de la sección de la web a la que enlazan las "fuentes"; vacío si no aplica).
 - Cada bloque `## ` se convierte en un *chunk* independiente: mantenlos autocontenidos (repite el nombre "Laura" en vez de usar solo pronombres).
 - Tras editar: `uv run python -m app.rag.ingest --reset` (o reinicia la API con `AUTO_INGEST=true`, que detecta cambios por hash).
+- `blog.md` se genera desde los artículos del blog (`cd front && npm run blog:knowledge`): no lo edites a mano.
 - No incluyas nada que no quieras que el bot diga en público.

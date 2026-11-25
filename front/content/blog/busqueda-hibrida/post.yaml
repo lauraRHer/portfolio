@@ -1,0 +1,5 @@
+# Shared data for both languages. See docs/guides/anadir-un-articulo.md
+date: 2026-11-12
+constellation: rag
+tags: [RAG, BM25, Embeddings, Python]
+project: portfolio-rag

@@ -1,0 +1,5 @@
+# Shared data for both languages. See docs/guides/anadir-un-articulo.md
+date: 2026-10-28
+constellation: rag
+tags: [LLM, FastAPI, Arquitectura hexagonal, Python]
+project: portfolio-rag
