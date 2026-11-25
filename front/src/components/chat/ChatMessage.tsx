@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { siteConfig } from "@/config/site";
 import { sections } from "@/content/sections";
+import { useSectionHref } from "@/lib/hooks/useSectionHref";
 import type { UiMessage } from "@/lib/chat/useChat";
 import { cn } from "@/lib/utils";
 import { LinkedinIcon } from "../ui/BrandIcons";
@@ -23,6 +24,7 @@ type Props = {
 export function ChatMessage({ message: m, onRetry, onSuggestion, suggestions }: Props) {
   const t = useTranslations("chat");
   const tNav = useTranslations("nav");
+  const sectionHref = useSectionHref();
   const isUser = m.role === "user";
 
   if (m.notice === "contact") return <ContactNudge />;
@@ -61,7 +63,7 @@ export function ChatMessage({ message: m, onRetry, onSuggestion, suggestions }: 
               unwrapDisallowed
               components={{
                 a: ({ href, children }) => (
-                  <a href={href} className="text-cyan underline" target={href?.startsWith("#") ? undefined : "_blank"} rel="noopener noreferrer">
+                  <a href={href} className="text-cyan underline" target={/^https?:/.test(href ?? "") ? "_blank" : undefined} rel="noopener noreferrer">
                     {children}
                   </a>
                 ),
@@ -79,7 +81,7 @@ export function ChatMessage({ message: m, onRetry, onSuggestion, suggestions }: 
           <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-line pt-2">
             <span className="label-mono text-[0.62rem] text-ink-muted">{t("sources")}:</span>
             {uniqueSections.map((s) => (
-              <a key={s} href={`#${s}`} className="rounded-md border border-cyan/30 px-1.5 py-0.5 font-mono text-[0.65rem] text-cyan hover:bg-cyan/10">
+              <a key={s} href={sectionHref(s)} className="rounded-md border border-cyan/30 px-1.5 py-0.5 font-mono text-[0.65rem] text-cyan hover:bg-cyan/10">
                 {tNav(sectionKey[s])}
               </a>
             ))}

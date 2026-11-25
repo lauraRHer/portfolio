@@ -2,21 +2,21 @@
 
 import { motion, useScroll, useSpring } from "motion/react";
 import { useTranslations } from "next-intl";
-import { sections } from "@/content/sections";
+import { sections, type SectionId } from "@/content/sections";
 import { usePastHero } from "@/lib/hooks/usePastHero";
 import { useScrollSpy } from "@/lib/hooks/useScrollSpy";
 import { cn } from "@/lib/utils";
 
-const ids = sections.map((s) => s.id);
 
 /**
  * Scroll progress "trajectory":
  * vertical line with one dot per orbit on desktop, thin top bar on mobile.
  */
-export function Trajectory() {
+export function Trajectory({ hidden = [] }: { hidden?: SectionId[] }) {
   const t = useTranslations("nav");
   const pastHero = usePastHero();
-  const active = useScrollSpy(ids);
+  const visible = sections.filter((s) => !hidden.includes(s.id));
+  const active = useScrollSpy(visible.map((s) => s.id));
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
@@ -35,7 +35,7 @@ export function Trajectory() {
           <motion.div style={{ scaleY: progress }} className="h-full w-full origin-top bg-[linear-gradient(180deg,#8b5cf6,#e040fb,#22d3ee)]" />
         </div>
         <ol className="relative flex flex-col gap-6">
-          {sections.map((s) => (
+          {visible.map((s) => (
             <li key={s.id} className="group relative flex items-center justify-center">
               <a
                 href={`#${s.id}`}

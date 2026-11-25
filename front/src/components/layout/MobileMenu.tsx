@@ -5,17 +5,19 @@ import { Download, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useEffect, useRef } from "react";
 import { siteConfig } from "@/config/site";
-import { sections } from "@/content/sections";
+import { sections, type SectionId } from "@/content/sections";
+import { useSectionHref } from "@/lib/hooks/useSectionHref";
 import type { Locale } from "@/i18n/routing";
 import { CopyEmailButton } from "../ui/CopyEmailButton";
 import { LanguageSwitch } from "./LanguageSwitch";
 
-/** Full-screen glass menu for < md. Esc closes, focus is trapped, body scroll locked. */
-export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+/** Full-screen glass menu for < lg. Esc closes, focus is trapped, body scroll locked. */
+export function MobileMenu({ open, onClose, hidden = [] }: { open: boolean; onClose: () => void; hidden?: SectionId[] }) {
   const t = useTranslations("nav");
   const tc = useTranslations("contact");
   const locale = useLocale() as Locale;
   const panel = useRef<HTMLDivElement>(null);
+  const href = useSectionHref();
 
   useEffect(() => {
     if (!open) return;
@@ -67,14 +69,14 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
 
           <nav className="mt-10 flex-1">
             <ol className="space-y-3">
-              {sections.map((s, i) => (
+              {sections.filter((s) => !hidden.includes(s.id)).map((s, i) => (
                 <motion.li
                   key={s.id}
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.05 + i * 0.06 }}
                 >
-                  <a href={`#${s.id}`} onClick={onClose} className="flex items-baseline gap-4 font-display text-4xl font-bold tracking-tight">
+                  <a href={href(s.id)} onClick={onClose} className="flex items-baseline gap-4 font-display text-4xl font-bold tracking-tight">
                     <span className="label-mono text-ink-muted">{String(i + 1).padStart(2, "0")}</span>
                     {t(s.key)}
                   </a>

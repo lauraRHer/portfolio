@@ -5,27 +5,32 @@ import { Download, Menu } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useState } from "react";
 import { siteConfig } from "@/config/site";
-import { sections } from "@/content/sections";
+import { sections, type SectionId } from "@/content/sections";
 import type { Locale } from "@/i18n/routing";
 import { usePastHero } from "@/lib/hooks/usePastHero";
 import { useScrollSpy } from "@/lib/hooks/useScrollSpy";
+import { useSectionHref } from "@/lib/hooks/useSectionHref";
 import { cn } from "@/lib/utils";
 import { LanguageSwitch } from "./LanguageSwitch";
 import { MobileMenu } from "./MobileMenu";
 
-const sectionIds = sections.map((s) => s.id);
 
 /**
  * Top navigation.
  * - During the hero: only "Skip intro" + language switch (top-right).
  * - After entering the star: glass pill nav that hides on scroll down
  *   and reappears on scroll up.
+ * On other pages (blog) links point back to the home sections; `current`
+ * marks the section the page belongs to and `hidden` drops sections with
+ * nothing to show (e.g. the blog before the first post).
  */
-export function Navbar() {
+export function Navbar({ current, hidden: hiddenSections = [] }: { current?: SectionId; hidden?: SectionId[] }) {
   const t = useTranslations("nav");
   const locale = useLocale() as Locale;
   const pastHero = usePastHero();
-  const active = useScrollSpy(sectionIds);
+  const visible = sections.filter((s) => !hiddenSections.includes(s.id));
+  const active = useScrollSpy(visible.map((s) => s.id)) ?? current ?? null;
+  const href = useSectionHref();
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const { scrollY } = useScroll();
@@ -47,7 +52,7 @@ export function Navbar() {
             exit={{ opacity: 0 }}
             className="fixed right-4 top-4 z-50 flex items-center gap-4 md:right-8 md:top-6"
           >
-            <a href="#core" className="label-mono rounded-full px-3 py-2 text-ink-soft transition-colors hover:text-ink">
+            <a href={href("core")} className="label-mono rounded-full px-3 py-2 text-ink-soft transition-colors hover:text-ink">
               {t("skipIntro")} →
             </a>
             <LanguageSwitch />
@@ -66,20 +71,20 @@ export function Navbar() {
         inert={!pastHero}
       >
         <nav aria-label="Main" className="glass mx-auto flex h-14 max-w-4xl items-center justify-between rounded-full pl-5 pr-2 elevation">
-          <a href="#core" className="font-display text-lg font-bold tracking-tight hover:text-gradient" aria-label={t("home")}>
+          <a href={href("core")} className="font-display text-lg font-bold tracking-tight hover:text-gradient" aria-label={t("home")}>
             {siteConfig.shortName}
           </a>
 
-          <ul className="hidden items-center gap-1 md:flex">
-            {sections
+          <ul className="hidden items-center gap-1 lg:flex">
+            {visible
               .filter((s) => s.inNav)
               .map((s) => (
                 <li key={s.id}>
                   <a
-                    href={`#${s.id}`}
+                    href={href(s.id)}
                     aria-current={active === s.id ? "location" : undefined}
                     className={cn(
-                      "relative rounded-full px-3 py-2 text-sm transition-colors",
+                      "relative whitespace-nowrap rounded-full px-3 py-2 text-sm transition-colors",
                       active === s.id ? "text-ink" : "text-ink-soft hover:text-ink",
                     )}
                   >
@@ -105,7 +110,7 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setMenuOpen(true)}
-              className="inline-flex size-11 items-center justify-center rounded-full text-ink-soft hover:text-ink md:hidden"
+              className="inline-flex size-11 items-center justify-center rounded-full text-ink-soft hover:text-ink lg:hidden"
               aria-label={t("openMenu")}
               aria-expanded={menuOpen}
             >
@@ -115,7 +120,7 @@ export function Navbar() {
         </nav>
       </motion.header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} hidden={hiddenSections} />
     </>
   );
 }

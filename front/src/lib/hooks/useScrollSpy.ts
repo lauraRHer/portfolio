@@ -8,9 +8,12 @@ import { useEffect, useState } from "react";
  */
 export function useScrollSpy(ids: readonly string[]) {
   const [active, setActive] = useState<string | null>(null);
+  // Keyed by content, so callers can pass a fresh array on every render.
+  const key = ids.join("|");
 
   useEffect(() => {
-    const elements = ids
+    const elements = key
+      .split("|")
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
 
@@ -26,7 +29,7 @@ export function useScrollSpy(ids: readonly string[]) {
 
     elements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
-  }, [ids]);
+  }, [key]);
 
   return active;
 }

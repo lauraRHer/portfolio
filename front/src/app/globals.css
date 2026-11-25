@@ -234,3 +234,50 @@ html[data-motion="reduce"] [class*="animate-"] {
   20% { opacity: 1; }
   100% { transform: translateY(10px); opacity: 0; }
 }
+
+/* ==========================================================================
+   Blog
+   ========================================================================== */
+
+/* Star halos on the blog map twinkle, unless motion is reduced */
+.star-halo { animation: star-twinkle 3.6s ease-in-out infinite; }
+[data-star]:nth-of-type(2n) .star-halo { animation-delay: 1.4s; }
+[data-star]:nth-of-type(3n) .star-halo { animation-delay: 2.3s; }
+@keyframes star-twinkle { 50% { opacity: 0.12; } }
+html[data-motion="reduce"] .star-halo { animation: none; }
+@media (prefers-reduced-motion: reduce) { .star-halo { animation: none; } }
+
+/* Article body: markdown rendered with the portfolio type scale */
+.prose-blog { color: var(--color-ink-soft); font-size: 1.075rem; line-height: 1.8; }
+.prose-blog > * + * { margin-top: 1.25em; }
+.prose-blog h2 {
+  margin-top: 2.6em;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 1.9rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+.prose-blog h3 { margin-top: 2em; font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; color: var(--color-ink); }
+.prose-blog strong { color: var(--color-ink); font-weight: 600; }
+.prose-blog a { color: var(--color-cyan); text-decoration: underline; text-underline-offset: 3px; }
+.prose-blog ul { list-style: disc; padding-left: 1.3rem; }
+.prose-blog ol { list-style: decimal; padding-left: 1.3rem; }
+.prose-blog li + li { margin-top: 0.4em; }
+.prose-blog li::marker { color: var(--color-violet-soft); }
+.prose-blog blockquote { border-left: 2px solid var(--color-violet); padding-left: 1.25rem; font-family: var(--font-display); font-size: 1.2rem; color: var(--color-ink); }
+.prose-blog :not(pre) > code { font-family: var(--font-mono); font-size: 0.88em; color: var(--color-violet-soft); background: rgb(139 92 246 / 0.1); padding: 0.1em 0.35em; border-radius: 4px; }
+.prose-blog pre {
+  overflow-x: auto;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  background: var(--color-space-900);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--color-ink);
+}
+.prose-blog hr { border: 0; border-top: 1px solid var(--color-line); }

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 /**
  * True once the visitor has "entered the star" (the #core section reached
- * the top of the viewport). Used to reveal the navbar and the chat launcher.
+ * the top of the viewport), or on pages that have no hero. Used to reveal the navbar and the chat launcher.
  */
 export function usePastHero(offset = 120) {
   const [past, setPast] = useState(false);
@@ -12,7 +12,8 @@ export function usePastHero(offset = 120) {
   useEffect(() => {
     const check = () => {
       const core = document.getElementById("core");
-      if (!core) return;
+      // Pages without the hero (blog) count as already past it.
+      if (!core) return setPast(true);
       setPast(core.getBoundingClientRect().top <= offset);
     };
     check();

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "rig:mascot": "node scripts/rig-mascot.mjs"
+    "rig:mascot": "node scripts/rig-mascot.mjs",
+    "blog:knowledge": "node scripts/export-blog-knowledge.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.9",
@@ -21,7 +22,8 @@
     "react-dom": "19.2.8",
     "react-markdown": "^10.1.0",
     "tailwind-merge": "^3.7.0",
-    "three": "^0.186.1"
+    "three": "^0.186.1",
+    "yaml": "^2.9.1"
   },
   "devDependencies": {
     "@gltf-transform/core": "^4.5.1",

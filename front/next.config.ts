@@ -18,6 +18,11 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: devOrigins,
   // Standalone output keeps the Docker image small (see front/Dockerfile).
   output: "standalone",
+  // Blog pages are prerendered, but each post's Open Graph image is rendered
+  // on demand and reads content/blog at runtime: ship those files with it.
+  outputFileTracingIncludes: {
+    "/\\[locale\\]/blog/**": ["./content/blog/**/*"],
+  },
   reactStrictMode: true,
   // Basic security headers. No strict CSP: React Three Fiber and Next's inline
   // scripts would need nonces, which isn't worth it for a static portfolio.

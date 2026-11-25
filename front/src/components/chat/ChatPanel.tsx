@@ -14,12 +14,12 @@ import { ChatMessage, EmailLink } from "./ChatMessage";
 const MAX_CHARS = 500;
 
 /** Assistant panel: desktop floating card, mobile full-screen sheet. */
-export function ChatPanel({ onClose }: { onClose: () => void }) {
+export function ChatPanel({ onClose, initialInput }: { onClose: () => void; initialInput?: string }) {
   const t = useTranslations("chat");
   const locale = useLocale();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const { messages, status, send, stop, retry, reset } = useChat(locale);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(initialInput ?? "");
   const [online, setOnline] = useState<boolean | null>(null);
   const [placeholderIdx, setPlaceholderIdx] = useState(0);
   const [stuckToBottom, setStuckToBottom] = useState(true);

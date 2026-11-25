@@ -2,12 +2,14 @@
 
 import { useTranslations } from "next-intl";
 import { siteConfig } from "@/config/site";
+import { useSectionHref } from "@/lib/hooks/useSectionHref";
 import { useMotionPreference } from "@/providers/MotionPreferenceProvider";
 import { LanguageSwitch } from "./LanguageSwitch";
 
 export function Footer() {
   const t = useTranslations("footer");
   const { userOverride, toggle } = useMotionPreference();
+  const href = useSectionHref();
 
   return (
     <footer className="border-t border-line bg-space-950">
@@ -28,8 +30,8 @@ export function Footer() {
           <button type="button" onClick={toggle} aria-pressed={userOverride} className="min-h-8 hover:text-ink">
             {userOverride ? t("enableMotion") : t("reduceMotion")}
           </button>
-          <a href="#core" className="hover:text-ink">{t("backToTop")}</a>
-          <a href="#hero" className="hover:text-ink">{t("seeGalaxy")}</a>
+          <a href={href("core")} className="hover:text-ink">{t("backToTop")}</a>
+          <a href={href("hero")} className="hover:text-ink">{t("seeGalaxy")}</a>
         </div>
       </div>
     </footer>

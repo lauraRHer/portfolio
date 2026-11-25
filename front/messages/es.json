@@ -19,7 +19,8 @@
     "closeMenu": "Cerrar menú",
     "language": "Idioma",
     "home": "Volver al inicio",
-    "progress": "Progreso de la página"
+    "progress": "Progreso de la página",
+    "blog": "Bitácora"
   },
   "hero": {
     "eyebrow": "Laura Rodrigo Hernando · Full-Stack → AI Engineer",
@@ -189,7 +190,7 @@
     "viewCredential": "Ver credencial"
   },
   "contact": {
-    "orbit": "Órbita 08 · Transmisión",
+    "orbit": "Órbita 09 · Transmisión",
     "title": "Hablemos.",
     "sub": "¿Buscas a alguien para tu equipo o tienes un proyecto en mente? Trabajo en remoto y estaré encantada de escucharte. Envíame una señal.",
     "labels": {
@@ -257,5 +258,46 @@
     "hover": "¿Hablamos? ¡Pulsa y pregúntame!",
     "phew": "¡Uf!",
     "label": "Abrir el asistente de Laura"
+  },
+  "blog": {
+    "orbit": "Órbita 08 · Bitácora",
+    "title": "Lo que aprendo mientras construyo",
+    "intro": "Artículos sobre RAG, LLMs y las decisiones detrás de este portfolio. Cada estrella del mapa es un artículo.",
+    "metaTitle": "Bitácora (blog) — Laura Rodrigo Hernando",
+    "metaDescription": "Artículos de Laura Rodrigo Hernando sobre RAG, LLMs, arquitectura y frontend 3D: qué decidí, por qué y qué aprendí.",
+    "indexEyebrow": "Bitácora (blog)",
+    "indexTitle": "Un mapa de lo que escribo",
+    "indexIntro": "Cada estrella es un artículo y cada constelación, un tema. Elige una estrella o baja a la lista.",
+    "mapLabel": "Mapa de artículos",
+    "constellations": {
+      "rag": "RAG y LLMs",
+      "front": "3D y front",
+      "architecture": "Arquitectura"
+    },
+    "legend": {
+      "star": "Cada estrella es un artículo",
+      "size": "Tamaño = minutos de lectura",
+      "brightness": "Brillo = más reciente",
+      "lines": "Líneas = orden de publicación"
+    },
+    "filterLabel": "Filtrar por tema",
+    "all": "Todos",
+    "allPosts": "Todos los artículos",
+    "count": "{n} de {total}",
+    "minutes": "{n} min",
+    "read": "Leer",
+    "readArticle": "Leer artículo",
+    "closeCard": "Cerrar ficha",
+    "openMap": "Abrir el mapa de la bitácora",
+    "back": "Volver a la bitácora",
+    "readingTime": "{n} min de lectura",
+    "otherLanguage": "Read in English",
+    "toc": "En este artículo",
+    "askTitle": "Pregunta al asistente",
+    "askBody": "sobre este tema: abre el chat con una pregunta sugerida.",
+    "askQuestion": "¿Qué cuenta Laura en el artículo «{title}»?",
+    "next": "Siguiente en la constelación",
+    "related": "Proyecto relacionado",
+    "draft": "Borrador"
   }
 }

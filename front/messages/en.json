@@ -19,7 +19,8 @@
     "closeMenu": "Close menu",
     "language": "Language",
     "home": "Back to start",
-    "progress": "Page progress"
+    "progress": "Page progress",
+    "blog": "Logbook"
   },
   "hero": {
     "eyebrow": "Laura Rodrigo Hernando · Full-Stack → AI Engineer",
@@ -189,7 +190,7 @@
     "viewCredential": "View credential"
   },
   "contact": {
-    "orbit": "Orbit 08 · Transmission",
+    "orbit": "Orbit 09 · Transmission",
     "title": "Let's talk.",
     "sub": "Looking for someone to join your team, or have a project in mind? I work remotely and I'd love to hear from you. Send me a signal.",
     "labels": {
@@ -257,5 +258,46 @@
     "hover": "Shall we talk? Click and ask me!",
     "phew": "Phew!",
     "label": "Open Laura's assistant"
+  },
+  "blog": {
+    "orbit": "Orbit 08 · Logbook",
+    "title": "What I learn while building",
+    "intro": "Posts on RAG, LLMs and the decisions behind this portfolio. Every star on the map is a post.",
+    "metaTitle": "Logbook (blog) — Laura Rodrigo Hernando",
+    "metaDescription": "Posts by Laura Rodrigo Hernando on RAG, LLMs, architecture and 3D frontend: what I decided, why, and what I learned.",
+    "indexEyebrow": "Logbook (blog)",
+    "indexTitle": "A map of what I write",
+    "indexIntro": "Every star is a post and every constellation a topic. Pick a star or scroll down to the list.",
+    "mapLabel": "Map of posts",
+    "constellations": {
+      "rag": "RAG & LLMs",
+      "front": "3D & front",
+      "architecture": "Architecture"
+    },
+    "legend": {
+      "star": "Every star is a post",
+      "size": "Size = reading time",
+      "brightness": "Brightness = more recent",
+      "lines": "Lines = publication order"
+    },
+    "filterLabel": "Filter by topic",
+    "all": "All",
+    "allPosts": "All posts",
+    "count": "{n} of {total}",
+    "minutes": "{n} min",
+    "read": "Read",
+    "readArticle": "Read post",
+    "closeCard": "Close card",
+    "openMap": "Open the logbook map",
+    "back": "Back to the logbook",
+    "readingTime": "{n} min read",
+    "otherLanguage": "Leer en español",
+    "toc": "In this post",
+    "askTitle": "Ask the assistant",
+    "askBody": "about this topic: opens the chat with a suggested question.",
+    "askQuestion": "What does Laura explain in the post \"{title}\"?",
+    "next": "Next in this constellation",
+    "related": "Related project",
+    "draft": "Draft"
   }
 }

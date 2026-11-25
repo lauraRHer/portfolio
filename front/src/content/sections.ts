@@ -11,6 +11,7 @@ export const sections = [
   { id: "case-study", key: "caseStudy", inNav: false },
   { id: "projects", key: "projects", inNav: true },
   { id: "learning", key: "learning", inNav: false },
+  { id: "blog", key: "blog", inNav: true },
   { id: "contact", key: "contact", inNav: true },
 ] as const;
 
